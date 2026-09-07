@@ -89,6 +89,7 @@ jobs:
 
       - name: Build store package
         env:
+          TARGET_REPO: ${{ inputs.target_repo }}
           STORE_ID: ${{ inputs.store_id }}
           SHOP_NAME: ${{ inputs.shop_name }}
           PROVIDER: ${{ inputs.provider }}
@@ -127,7 +128,6 @@ jobs:
           liff_id = val('LIFF_ID') or '__LIFF_ID__'
           api_url = val('API_URL') or '__API_URL__'
 
-          # Customer frontend: source of truth is production baseline.
           index = download(prod_base + '/index.html')
           index = index.replace('2011202604-C2aNSUPF', liff_id)
           index = index.replace('AKfycby630JecNzApWvBQCY1mpsA4rS9tMHqtKidSmcE5Vz4GsVwfOHu2mKE0hmHkJ00HfdA', api_url)
@@ -135,7 +135,6 @@ jobs:
           index = re.sub(r'(<title>)(.*?)(</title>)', lambda m: m.group(1) + shop_name + m.group(3), index, count=1, flags=re.S)
           (target / 'index.html').write_text(index, encoding='utf-8')
 
-          # Admin frontend: same production baseline, store-aware values.
           admin = download(prod_base + '/admin.html')
           admin = admin.replace('2011202604-C2aNSUPF', liff_id)
           admin = admin.replace('AKfycby630JecNzApWvBQCY1mpsA4rS9tMHqtKidSmcE5Vz4GsVwfOHu2mKE0hmHkJ00HfdA', api_url)
@@ -143,13 +142,10 @@ jobs:
           admin = re.sub(r'(<title>)(.*?)(</title>)', lambda m: m.group(1) + shop_name + m.group(3), admin, count=1, flags=re.S)
           (target / 'admin.html').write_text(admin, encoding='utf-8')
 
-          # Full Store-aware backend Golden Master.
-          backend_url = core_base + '/golden-master/backend/CORE_BACKEND_MASTER.gs'
-          backend = download(backend_url)
+          backend = download(core_base + '/golden-master/backend/CORE_BACKEND_MASTER.gs')
           (target / 'backend').mkdir(parents=True, exist_ok=True)
           (target / 'backend' / 'Code.gs').write_text(backend, encoding='utf-8')
 
-          # Store configuration - intentionally excludes secrets.
           config = {
               'STORE_ID': val('STORE_ID'),
               'SHOP_NAME': shop_name,
@@ -182,15 +178,16 @@ jobs:
               json.dumps(config, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
           )
 
-          # Apps Script manifest for the store backend.
           (target / 'backend' / 'appsscript.json').write_text(json.dumps({
               'timeZone': 'Asia/Bangkok',
               'exceptionLogging': 'STACKDRIVER',
               'runtimeVersion': 'V8'
           }, indent=2) + '\n', encoding='utf-8')
 
-          # Simple backend status page for the Apps Script root.
-          (target / 'backend' / 'Index.html').write_text('''<!doctype html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FOOD ORDER API</title></head><body><h2>FOOD ORDER SYSTEM API</h2><p>Store: %s</p><p>Store ID: %s</p><p>API พร้อมใช้งานเมื่อ Apps Script ถูก Deploy เป็น Web App</p></body></html>''' % (shop_name, val('STORE_ID')), encoding='utf-8')
+          (target / 'backend' / 'Index.html').write_text(
+              '''<!doctype html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FOOD ORDER API</title></head><body><h2>FOOD ORDER SYSTEM API</h2><p>Store: %s</p><p>Store ID: %s</p><p>API พร้อมใช้งานเมื่อ Apps Script ถูก Deploy เป็น Web App</p></body></html>''' % (shop_name, val('STORE_ID')),
+              encoding='utf-8'
+          )
 
           (target / 'README.md').write_text(f'''# FOOD ORDER SYSTEM - {shop_name}\n\nStore Instance: `{val('STORE_ID')}`\nProvider: `{val('PROVIDER')}`\n\nThis repository is generated from FOOD ORDER SYSTEM CORE Golden Master.\nProduction repository is not modified by this workflow.\n\n## Package\n- Customer: `index.html`\n- Admin: `admin.html`\n- Backend: `backend/Code.gs`\n- Apps Script manifest: `backend/appsscript.json`\n- Store config: `config/store-config.json`\n\n## Secrets\nNever commit LINE channel access tokens, GitHub tokens, Admin PINs, or other secrets here.\n''', encoding='utf-8')
 
