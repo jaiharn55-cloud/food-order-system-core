@@ -1,0 +1,7248 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>
+    ร้านข้าวแกง - หน้าร้าน
+  </title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      font-family:
+        Arial,
+        "Noto Sans Thai",
+        sans-serif;
+
+      background: #f4f5f7;
+
+      color: #222;
+
+    }
+
+
+    .header {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 10;
+
+      background: #06c755;
+
+      color: white;
+
+      padding: 16px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,.12);
+
+    }
+
+
+    .header-row {
+
+      max-width: 1000px;
+
+      margin: auto;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+    .title {
+
+      font-size: 21px;
+
+      font-weight: bold;
+
+    }
+
+
+    .date {
+
+      font-size: 13px;
+
+      margin-top: 4px;
+
+      opacity: .9;
+
+    }
+
+
+    .refresh {
+
+      border: none;
+
+      background: white;
+
+      color: #06a84f;
+
+      padding: 9px 13px;
+
+      border-radius: 9px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+    }
+
+
+    .container {
+
+      max-width: 1000px;
+
+      margin: auto;
+
+      padding: 15px;
+
+    }
+
+
+    .summary {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 10px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .summary-card {
+
+      background: white;
+    
+      border-radius: 12px;
+    
+      padding: 13px;
+    
+      box-shadow:
+        0 1px 5px
+        rgba(0,0,0,.07);
+    
+      text-align: center;
+    
+      cursor: pointer;
+    
+      transition:
+        transform .15s,
+        box-shadow .15s;
+    
+    }
+    
+    
+    .summary-card:hover {
+    
+      transform: translateY(-2px);
+    
+      box-shadow:
+        0 3px 10px
+        rgba(0,0,0,.12);
+    
+    }
+    
+    
+    .summary-card.active {
+    
+      border: 2px solid #06c755;
+    
+      box-shadow:
+        0 0 0 2px
+        rgba(6,199,85,.12);
+    
+    }
+
+
+    .summary-number {
+
+      font-size: 27px;
+
+      font-weight: bold;
+
+    }
+
+
+    .summary-label {
+
+      font-size: 13px;
+
+      color: #666;
+
+      margin-top: 4px;
+
+    }
+
+
+    .section {
+
+      margin-top: 20px;
+
+    }
+
+
+    .section-title {
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      margin-bottom: 10px;
+
+    }
+
+    .daily-dish-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.daily-dish-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 10003;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.daily-dish-modal-box {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.daily-dish-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.daily-dish-modal-header h2 {
+  margin: 0 0 10px;
+}
+
+.daily-dish-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daily-dish-date input {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.daily-dish-close {
+  border: 0;
+  background: transparent;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.daily-dish-library-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.daily-dish-library-actions button {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.daily-dish-library-list {
+  padding: 12px 20px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.daily-dish-library-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.daily-dish-library-item:hover {
+  background: #f8f8f8;
+}
+
+.daily-dish-library-item input {
+  width: 20px;
+  height: 20px;
+}
+
+.daily-dish-library-name {
+  font-weight: 600;
+}
+
+.daily-dish-library-description {
+  font-size: 13px;
+  color: #777;
+  margin-top: 3px;
+}
+
+.daily-dish-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+}
+
+.daily-dish-modal-footer button {
+  padding: 9px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #111;
+  color: #fff;
+  border-color: #111 !important;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #111;
+}
+    
+    /* =====================================
+     * LOCAL NEW ORDER NOTIFICATION
+     * ===================================== */
+
+    
+    .silent-refresh-status {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      z-index: 9998;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.55);
+      color: white;
+      font-size: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .silent-refresh-status.show {
+      opacity: 1;
+    }
+
+.new-order-alert {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: min(92vw, 420px);
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #dc2626;
+      color: white;
+      box-shadow: 0 8px 30px rgba(0,0,0,.22);
+      cursor: pointer;
+      animation: newOrderPulse 1s ease-in-out infinite;
+    }
+
+    .new-order-alert.show {
+      display: block;
+    }
+
+    .new-order-alert.urgent {
+      background: #dc2626;
+      border: 3px solid #ffffff;
+      box-shadow:
+        0 0 0 4px rgba(220,38,38,.25),
+        0 10px 35px rgba(0,0,0,.35);
+      animation: newOrderUrgentPulse .75s ease-in-out infinite;
+    }
+
+    @keyframes newOrderUrgentPulse {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+      }
+      50% {
+        transform: translateX(-50%) scale(1.045);
+      }
+    }
+
+    .new-order-alert-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .new-order-alert-detail {
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    @keyframes newOrderPulse {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+      }
+      50% {
+        transform: translateX(-50%) scale(1.025);
+      }
+    }
+
+    .notification-test-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 10px;
+      background: #dc2626;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+
+.order-card {
+
+      background: white;
+
+      border-radius: 14px;
+
+      margin-bottom: 12px;
+
+      padding: 15px;
+
+      box-shadow:
+        0 2px 7px
+        rgba(0,0,0,.08);
+
+    }
+
+
+    .order-top {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: flex-start;
+
+      gap: 10px;
+
+    }
+
+
+    .order-id {
+
+      font-size: 27px;
+
+      font-weight: bold;
+
+    }
+
+
+    .order-time {
+
+      color: #666;
+
+      font-size: 13px;
+
+      margin-top: 3px;
+
+    }
+
+
+    .status {
+
+      padding: 6px 9px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      font-weight: bold;
+
+      white-space: nowrap;
+
+    }
+
+
+    .status-new {
+
+      background: #fff0d6;
+
+      color: #a15b00;
+
+    }
+
+
+    .status-preparing {
+
+      background: #e7f0ff;
+
+      color: #1757a6;
+
+    }
+
+
+    .status-ready {
+
+      background: #e5f8ec;
+
+      color: #087a37;
+
+    }
+
+
+    .status-completed {
+
+      background: #eeeeee;
+
+      color: #666;
+
+    }
+
+
+    .customer {
+
+      margin-top: 12px;
+
+      font-weight: bold;
+
+    }
+
+
+    .pickup {
+
+      margin-top: 6px;
+
+      padding: 9px;
+
+      background: #f5f5f5;
+
+      border-radius: 9px;
+
+      font-size: 14px;
+
+    }
+
+
+    .items {
+
+      margin-top: 12px;
+
+      border-top:
+        1px solid #eee;
+
+      padding-top: 10px;
+
+    }
+
+
+    .item {
+
+      padding: 8px 0;
+
+      border-bottom:
+        1px dashed #ddd;
+
+    }
+
+
+    .item:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .item-name {
+
+      font-weight: bold;
+
+    }
+
+
+    .item-detail {
+
+      color: #666;
+
+      font-size: 13px;
+
+      margin-top: 3px;
+
+    }
+
+
+    .remark {
+
+      margin-top: 10px;
+
+      padding: 9px;
+
+      background: #fff8df;
+
+      border-radius: 8px;
+
+      font-size: 13px;
+
+    }
+
+
+    .order-bottom {
+
+      margin-top: 13px;
+
+      padding-top: 12px;
+
+      border-top:
+        1px solid #eee;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+    .total {
+
+      font-size: 20px;
+
+      font-weight: bold;
+
+    }
+
+
+    .payment {
+
+      font-size: 13px;
+
+      color: #666;
+
+    }
+
+
+    .payment-status {
+
+      margin-top: 6px;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+    }
+
+
+    .payment-unpaid {
+
+      color: #c62828;
+
+    }
+
+
+    .payment-pending {
+
+      color: #b26a00;
+
+    }
+
+
+    .payment-paid {
+
+      color: #087a37;
+
+    }
+
+
+    .payment-refunded {
+
+      color: #666;
+
+    }
+
+
+    .payment-actions {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: 9px;
+
+    }
+
+
+    .payment-btn {
+
+      border: none;
+
+      padding: 9px 10px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+    }
+
+
+    .payment-btn-green {
+
+      background: #e5f8ec;
+
+      color: #087a37;
+
+    }
+
+
+    .payment-btn-yellow {
+
+      background: #fff4d6;
+
+      color: #8a5a00;
+
+    }
+
+
+    .payment-btn-gray {
+
+      background: #eeeeee;
+
+      color: #555;
+
+    }
+
+
+    .actions {
+
+      display: flex;
+
+      gap: 8px;
+
+      margin-top: 12px;
+
+    }
+
+
+    .btn {
+
+      flex: 1;
+
+      border: none;
+
+      padding: 12px;
+
+      border-radius: 9px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+    }
+
+
+    .btn-primary {
+
+      background: #06c755;
+
+      color: white;
+
+    }
+
+
+    .btn-blue {
+
+      background: #2878d8;
+
+      color: white;
+
+    }
+
+
+    .btn-gray {
+
+      background: #e9e9e9;
+
+      color: #333;
+
+    }
+
+
+    .btn-red {
+
+      background: #ffe4e4;
+
+      color: #b00020;
+
+    }
+
+
+    .empty {
+
+      background: white;
+
+      border-radius: 12px;
+
+      padding: 30px 15px;
+
+      text-align: center;
+
+      color: #777;
+
+    }
+
+
+    .loading {
+
+      text-align: center;
+
+      padding: 40px 15px;
+
+      color: #666;
+
+    }
+
+
+    .error {
+
+      background: #ffe7e7;
+
+      color: #a00000;
+
+      padding: 13px;
+
+      border-radius: 10px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    @media (
+      max-width: 650px
+    ) {
+
+      .summary {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+      }
+
+
+      .order-top {
+
+        align-items: center;
+
+      }
+
+
+      .order-bottom {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+      }
+
+    }
+    
+
+    .settings-btn {
+      border: none;
+      background: white;
+      color: #222;
+      padding: 9px 11px;
+      border-radius: 9px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .settings-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,.45);
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .settings-backdrop.show {
+      display: block;
+    }
+
+    .settings-panel {
+      width: min(760px, 100%);
+      margin: 20px auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 45px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+
+    .settings-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 17px;
+      background: #06c755;
+      color: white;
+    }
+
+    .settings-head-title {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .settings-close {
+      border: none;
+      background: rgba(255,255,255,.2);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .settings-body {
+      padding: 16px;
+    }
+
+    .settings-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .settings-section-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .settings-row-title {
+      font-weight: 700;
+    }
+
+    .settings-row-note,
+    .settings-note {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 3px;
+    }
+
+    .settings-toggle {
+      min-width: 78px;
+      border: none;
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .settings-toggle.on {
+      background: #e5f8ec;
+      color: #087a37;
+    }
+
+    .settings-toggle.off {
+      background: #eeeeee;
+      color: #666;
+    }
+
+    .settings-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .settings-action {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #e9e9e9;
+      color: #333;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .settings-action.blue {
+      background: #e7f0ff;
+      color: #1757a6;
+    }
+
+    .settings-field {
+      margin-top: 10px;
+    }
+
+    .settings-field label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .settings-field input {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .version-note {
+      color: #888;
+      font-size: 11px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions button {
+        flex: 1;
+      }
+    }
+
+
+    .admin-menu-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .admin-menu-item {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 9px;
+      border: 1px solid #e6e6e6;
+      border-radius: 11px;
+      background: #fafafa;
+    }
+
+    .admin-menu-thumb {
+      width: 58px;
+      height: 58px;
+      object-fit: cover;
+      border-radius: 9px;
+      background: #eee;
+    }
+
+    .admin-menu-name {
+      font-weight: 800;
+    }
+
+    .admin-menu-meta {
+      color: #777;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .admin-menu-status {
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .admin-menu-status.available {
+      color: #087a37;
+    }
+
+    .admin-menu-status.soldout {
+      color: #b00020;
+    }
+
+    .admin-menu-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: flex-end;
+    }
+
+    .menu-editor {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f7f7f7;
+      border: 1px dashed #ddd;
+    }
+
+    .menu-image-preview {
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .settings-qr-preview {
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: white;
+      padding: 5px;
+    }
+
+    @media (max-width: 650px) {
+      .admin-menu-item {
+        grid-template-columns: 54px 1fr;
+      }
+
+      .admin-menu-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+
+      .admin-menu-thumb {
+        width: 54px;
+        height: 54px;
+      }
+    }
+
+
+    .menu-manage-btn {
+      border: none;
+      background: #fff7df;
+      color: #8a5a00;
+      padding: 9px 11px;
+      border-radius: 9px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .menu-manager-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      background: rgba(0,0,0,.45);
+      padding: 14px;
+      overflow-y: auto;
+    }
+
+    .menu-manager-backdrop.show {
+      display: block;
+    }
+
+    .menu-manager-panel {
+      width: min(1050px, 100%);
+      margin: 14px auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 45px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+
+    .menu-manager-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #06c755;
+      color: white;
+    }
+
+    .menu-manager-head-title {
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .menu-manager-close {
+      border: none;
+      background: rgba(255,255,255,.2);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .menu-manager-body {
+      padding: 14px;
+    }
+
+    .menu-toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .menu-search {
+      flex: 1 1 260px;
+      min-width: 180px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 10px 11px;
+      font-size: 14px;
+    }
+
+    .menu-filter {
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 10px 11px;
+      background: white;
+      min-width: 150px;
+    }
+
+    .menu-add-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 13px;
+      background: #06c755;
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .menu-manager-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .menu-item-card {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 9px;
+      background: #fff;
+    }
+
+    .menu-item-image {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #f3f3f3;
+      border: 1px solid #eee;
+    }
+
+    .menu-item-image.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 28px;
+    }
+
+    .menu-item-name {
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .menu-item-meta {
+      color: #666;
+      font-size: 12px;
+      margin-top: 3px;
+      line-height: 1.45;
+    }
+
+    .menu-item-status {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .menu-item-status.on {
+      color: #087a37;
+    }
+
+    .menu-item-status.off {
+      color: #b00020;
+    }
+
+    .menu-item-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .menu-action-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 9px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .menu-action-edit {
+      background: #e7f0ff;
+      color: #1757a6;
+    }
+
+    .menu-action-off {
+      background: #ffe6e6;
+      color: #b00020;
+    }
+
+    .menu-action-on {
+      background: #e5f8ec;
+      color: #087a37;
+    }
+
+    .menu-empty {
+      padding: 30px 12px;
+      text-align: center;
+      color: #888;
+    }
+
+    .menu-form-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10002;
+      background: rgba(0,0,0,.5);
+      padding: 14px;
+      overflow-y: auto;
+    }
+
+    .menu-form-backdrop.show {
+      display: block;
+    }
+
+    .menu-form-panel {
+      width: min(650px, 100%);
+      margin: 20px auto;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 45px rgba(0,0,0,.25);
+    }
+
+    .menu-form-body {
+      padding: 16px;
+    }
+
+    .menu-form-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu-form-grid label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 800;
+    }
+
+    .menu-form-grid input,
+    .menu-form-grid textarea,
+    .menu-form-grid select {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    .menu-form-grid textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .menu-form-image-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .menu-form-image-preview {
+      width: 86px;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 11px;
+      background: #f3f3f3;
+      border: 1px solid #eee;
+    }
+
+    .menu-form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .menu-form-save {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 14px;
+      background: #06c755;
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .menu-form-cancel {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 14px;
+      background: #ececec;
+      color: #444;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .menu-manager-note {
+      color: #777;
+      font-size: 11px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 700px) {
+      .menu-item-card {
+        grid-template-columns: 58px minmax(0, 1fr);
+      }
+
+      .menu-item-image {
+        width: 58px;
+        height: 58px;
+      }
+
+      .menu-item-actions {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+      }
+
+      .menu-item-actions button {
+        flex: 1;
+      }
+    }
+
+
+    .menu-tabs {
+      display:flex;
+      gap:6px;
+      overflow-x:auto;
+      margin-bottom:12px;
+      border-bottom:1px solid #eee;
+    }
+    .menu-tab-btn {
+      border:none;
+      background:#f3f3f3;
+      color:#555;
+      border-radius:9px 9px 0 0;
+      padding:9px 12px;
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .menu-tab-btn.active {
+      background:#06c755;
+      color:white;
+    }
+    .menu-system-panel { display:none; }
+    .menu-system-panel.show { display:block; }
+    .daily-summary, .special-summary {
+      background:#f8f8f8;
+      border-radius:10px;
+      padding:10px;
+      margin-bottom:10px;
+      font-size:12px;
+      color:#666;
+    }
+    .daily-item-card, .special-item-card {
+      display:grid;
+      grid-template-columns:64px minmax(0,1fr) auto;
+      gap:10px;
+      align-items:center;
+      border:1px solid #e6e6e6;
+      border-radius:11px;
+      padding:8px;
+      margin-bottom:8px;
+      background:#fff;
+    }
+    .daily-item-image, .special-item-image {
+      width:64px;height:64px;border-radius:9px;object-fit:cover;background:#f3f3f3;
+    }
+    .date-input {
+      border:1px solid #ddd;border-radius:9px;padding:9px 10px;font-size:14px;
+    }
+    .install-box {
+      border:1px solid #f1cf70;
+      background:#fff9e6;
+      border-radius:11px;
+      padding:11px;
+      margin-bottom:12px;
+    }
+    .install-btn {
+      border:none;border-radius:9px;padding:9px 11px;
+      background:#9a6700;color:white;font-weight:900;cursor:pointer;
+    }
+    @media (max-width:700px) {
+      .daily-item-card, .special-item-card { grid-template-columns:52px minmax(0,1fr); }
+      .daily-item-image, .special-item-image { width:52px;height:52px; }
+      .daily-item-card .menu-item-actions, .special-item-card .menu-item-actions { grid-column:1/-1; justify-content:stretch; }
+      .daily-item-card button, .special-item-card button { flex:1; }
+    }
+  
+    /* =========================================
+     * ADMIN PIN GATE
+     * ========================================= */
+    .admin-lock {
+      position: fixed;
+      inset: 0;
+      z-index: 50000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(6,199,85,.13),
+          transparent 42%
+        ),
+        #f4f5f7;
+      padding: 18px;
+    }
+
+    .admin-lock.hidden {
+      display: none;
+    }
+
+    .admin-lock-card {
+      width: min(420px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 14px 45px rgba(0,0,0,.14);
+      text-align: center;
+    }
+
+    .admin-lock-logo {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e9f8ef;
+      font-size: 38px;
+    }
+
+    .admin-lock-title {
+      font-size: 21px;
+      font-weight: 1000;
+      color: #145a38;
+    }
+
+    .admin-lock-sub {
+      margin-top: 5px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .admin-pin-input {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px 14px;
+      border: 1px solid #d9dfe2;
+      border-radius: 11px;
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 8px;
+      outline: none;
+    }
+
+    .admin-pin-input:focus {
+      border-color: #06c755;
+      box-shadow: 0 0 0 3px rgba(6,199,85,.12);
+    }
+
+    .admin-pin-btn {
+      width: 100%;
+      margin-top: 11px;
+      border: 0;
+      border-radius: 11px;
+      padding: 13px;
+      background: #06c755;
+      color: #fff;
+      font-weight: 1000;
+      font-size: 16px;
+    }
+
+    .admin-pin-error {
+      min-height: 20px;
+      margin-top: 9px;
+      color: #b00020;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .admin-pin-note {
+      margin-top: 9px;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .admin-logout-btn {
+      margin-left: 6px;
+    }
+</style>
+
+</head>
+
+
+<body>
+  <div id="adminLock" class="admin-lock">
+
+    <div class="admin-lock-card">
+
+      <div class="admin-lock-logo">
+        🔐
+      </div>
+
+      <div class="admin-lock-title">
+        ร้านข้าวแกง ตามสั่ง
+      </div>
+
+      <div class="admin-lock-sub">
+        เข้าสู่หน้าจัดการร้าน
+      </div>
+
+      <form
+        onsubmit="unlockAdmin(event)"
+      >
+
+        <input
+          id="adminPinInput"
+          class="admin-pin-input"
+          type="password"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="6"
+          autocomplete="off"
+          placeholder="PIN"
+          aria-label="รหัสเข้าหน้า Admin"
+        >
+
+        <button
+          type="submit"
+          class="admin-pin-btn"
+        >
+          🔓 เข้าสู่ระบบ
+        </button>
+
+      </form>
+
+      <div
+        id="adminPinError"
+        class="admin-pin-error"
+      ></div>
+
+      <div class="admin-pin-note">
+        ใช้สำหรับเครื่องหน้าร้านเท่านั้น
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="silentRefreshStatus"
+    class="silent-refresh-status"
+  >กำลังอัปเดต...</div>
+
+
+
+  <div
+    id="newOrderAlert"
+    class="new-order-alert"
+    onclick="dismissNewOrderAlert()"
+  >
+    <div
+      class="new-order-alert-title"
+      id="newOrderAlertTitle"
+    >🔔 มีออเดอร์ใหม่!</div>
+
+    <div
+      class="new-order-alert-detail"
+      id="newOrderAlertDetail"
+    >กรุณามาดูที่หน้าร้าน</div>
+  </div>
+
+
+
+
+  <div class="header">
+
+    <div class="header-row">
+
+      <div>
+
+        <div class="title">
+          🍱 ร้านข้าวแกง ตามสั่ง
+        </div>
+
+        <div
+          class="date"
+          id="today">
+        </div>
+
+        <div
+          class="date"
+          id="lastUpdated">
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          class="refresh"
+          onclick="loadOrders()">
+
+          🔄 รีเฟรช
+
+        </button>
+
+        
+        <button
+          class="menu-manage-btn"
+          onclick="openMenuManager()"
+        >
+          🍛 จัดการเมนู
+        </button>
+<button
+          class="settings-btn"
+          onclick="openSettings()">
+
+          ⚙️ ตั้งค่า
+
+        </button>
+        <button
+          class="settings-btn admin-logout-btn"
+          onclick="lockAdmin()"
+          title="ออกจากหน้า Admin"
+        >
+          🔒
+        </button>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div
+    id="menuManagerBackdrop"
+    class="menu-manager-backdrop"
+    onclick="menuManagerBackdropClick(event)"
+  >
+
+    <div class="menu-manager-panel">
+
+      <div class="menu-manager-head">
+
+        <div class="menu-manager-head-title">
+          🍛 จัดการเมนู
+        </div>
+
+        <button
+          class="menu-manager-close"
+          onclick="closeMenuManager()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="menu-manager-body">
+
+        <div class="menu-tabs">
+      
+          <button
+            id="menuTabMain"
+            class="menu-tab-btn active"
+            onclick="selectMenuManagerTab('main')"
+          >
+            🍛 เมนูหลัก
+          </button>
+      
+      
+          <button
+            id="menuTabDaily"
+            class="menu-tab-btn"
+            onclick="selectMenuManagerTab('daily')"
+          >
+            🍲 แกงวันนี้
+          </button>
+      
+      
+          <button
+            id="menuTabSpecial"
+            class="menu-tab-btn"
+            onclick="selectMenuManagerTab('special')"
+          >
+            ⭐ เมนูพิเศษ
+          </button>
+      
+        </div>
+      
+      
+        <!-- ปุ่มจัดการแกงวันนี้ -->
+        <div
+          id="dailyDishToolbar"
+          class="daily-dish-toolbar"
+          style="display:none;"
+        >
+      
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="openDailyDishLibrary()"
+          >
+            📚 เพิ่มจากคลังเมนู
+          </button>
+      
+      
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="openDailyDishForm()"
+          >
+            ➕ เพิ่มเมนูใหม่
+          </button>
+      
+        </div>
+
+        <div id="menuPanelMain" class="menu-system-panel show">
+
+          <div class="install-box">
+            <b>🧰 ชุดเมนูแนะนำ</b>
+            <div class="menu-manager-note">
+              จะสำรอง Menu และ Menu_Options เดิมก่อน แล้วติดตั้งเมนูตามสั่ง + ข้าวราดแกง 1/2/3 อย่าง + ตัวเลือกพื้นฐานให้ใหม่
+            </div>
+            <div class="settings-actions">
+              <button class="install-btn" onclick="installRecommendedMenus()">
+                🧰 ติดตั้งชุดเมนูแนะนำ
+              </button>
+            </div>
+          </div>
+
+          <div class="menu-toolbar">
+            <input id="menuSearchInput" class="menu-search" type="search" placeholder="🔎 ค้นหาเมนู..." oninput="renderMenuManager()">
+            <select id="menuStatusFilter" class="menu-filter" onchange="renderMenuManager()">
+              <option value="ALL">ทั้งหมด</option>
+              <option value="ON">🟢 กำลังขาย</option>
+              <option value="OFF">🔴 ของหมด / ปิดขาย</option>
+            </select>
+            <button class="menu-add-btn" onclick="openMenuForm()">➕ เพิ่มเมนู</button>
+          </div>
+
+          <div id="menuManagerList" class="menu-manager-list"></div>
+
+          <div class="menu-manager-note">
+            💡 เมนูที่มีออเดอร์เก่า แนะนำให้ใช้ “ปิดขาย” แทนการลบ
+          </div>
+
+        </div>
+
+
+        <div id="menuPanelDaily" class="menu-system-panel">
+
+          <div class="daily-summary">
+            🍲 รายการนี้เป็น “กับข้าวของวันนี้” ลูกค้าจะเลือกจากรายการนี้เมื่อสั่งข้าวราดแกง 1 / 2 / 3 อย่าง
+          </div>
+
+          <div class="menu-toolbar">
+            <input id="dailyDateInput" class="date-input" type="date">
+            <button class="menu-add-btn" onclick="loadDailyDishesForDate()">🔄 โหลด</button>
+            <button class="menu-add-btn" onclick="openDailyDishForm()">➕ เพิ่มเมนูใหม่</button>
+          </div>
+
+          <div id="dailyDishList"></div>
+
+        </div>
+
+
+        <div id="menuPanelSpecial" class="menu-system-panel">
+
+          <div class="special-summary">
+            ⭐ เมนูพิเศษใช้กำหนดช่วงวันที่ขายได้ เช่น ข้าวน้ำพริก ข้าวหมูแดง หรือเมนูที่ทำเฉพาะบางวัน
+          </div>
+
+          <div class="menu-toolbar">
+            <button class="menu-add-btn" onclick="openSpecialMenuForm()">➕ เพิ่มเมนูพิเศษ</button>
+          </div>
+
+          <div id="specialMenuList"></div>
+
+        </div>
+
+        <div class="menu-manager-note">
+          เมนูแกงวันนี้และเมนูพิเศษจะไม่ปะปนกับเมนูหลัก ทำให้เปลี่ยนรายวันได้ง่าย
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="menuFormBackdrop"
+    class="menu-form-backdrop"
+    onclick="menuFormBackdropClick(event)"
+  >
+
+    <div class="menu-form-panel">
+
+      <div class="menu-manager-head">
+
+        <div
+          id="menuFormTitle"
+          class="menu-manager-head-title"
+        >
+          ➕ เพิ่มเมนู
+        </div>
+
+        <button
+          class="menu-manager-close"
+          onclick="closeMenuForm()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="menu-form-body">
+
+        <form
+          id="menuForm"
+          class="menu-form-grid"
+          onsubmit="saveMenuFromForm(event)"
+        >
+
+          <input
+            id="menuFormId"
+            type="hidden"
+          >
+
+          <div>
+            <label>ชื่อเมนู</label>
+            <input
+              id="menuFormName"
+              required
+              maxlength="120"
+              placeholder="เช่น กะเพราไก่"
+            >
+          </div>
+
+          <div>
+            <label>ราคา</label>
+            <input
+              id="menuFormPrice"
+              type="number"
+              min="0"
+              step="1"
+              required
+              placeholder="50"
+            >
+          </div>
+
+          <div>
+            <label>หมวดหมู่</label>
+            <input
+              id="menuFormCategory"
+              maxlength="80"
+              placeholder="อาหารจานเดียว"
+            >
+          </div>
+
+          <div>
+            <label>รายละเอียด</label>
+            <textarea
+              id="menuFormDescription"
+              maxlength="500"
+              placeholder="รายละเอียดเพิ่มเติมของอาหาร"
+            ></textarea>
+          </div>
+
+          <div>
+
+            <label>รูปอาหาร</label>
+
+            <div class="menu-form-image-wrap">
+
+              <img
+                id="menuFormImagePreview"
+                class="menu-form-image-preview"
+                alt="รูปอาหาร"
+              >
+
+              <div style="flex:1">
+
+                <input
+                  id="menuFormImageFile"
+                  type="file"
+                  accept="image/*"
+                  onchange="previewMenuImage(event)"
+                >
+
+                <div
+                  class="menu-manager-note"
+                >
+                  รองรับ JPG / PNG สูงสุดประมาณ 4 MB
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="menu-form-actions">
+
+            <button
+              type="button"
+              class="menu-form-cancel"
+              onclick="closeMenuForm()"
+            >
+              ยกเลิก
+            </button>
+
+            <button
+              type="submit"
+              class="menu-form-save"
+            >
+              💾 บันทึกเมนู
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="dailyDishFormBackdrop" class="menu-form-backdrop" onclick="dailyDishFormBackdropClick(event)">
+    <div class="menu-form-panel">
+      <div class="menu-manager-head">
+        <div id="dailyDishFormTitle" class="menu-manager-head-title">➕ เพิ่มกับข้าว</div>
+        <button class="menu-manager-close" onclick="closeDailyDishForm()">×</button>
+      </div>
+      <div class="menu-form-body">
+        <form class="menu-form-grid" onsubmit="saveDailyDishFromForm(event)">
+          <input id="dailyDishFormId" type="hidden">
+          <div><label>วันที่</label><input id="dailyDishFormDate" class="date-input" type="date" required></div>
+          <div><label>ชื่อกับข้าว</label><input id="dailyDishFormName" required maxlength="120" placeholder="เช่น แกงเขียวหวานไก่"></div>
+          <div><label>รายละเอียด</label><textarea id="dailyDishFormDescription" maxlength="300" placeholder="เช่น ไม่เผ็ด / มีมะเขือ"></textarea></div>
+          <div>
+            <label>รูปกับข้าว</label>
+            <input id="dailyDishFormImageFile" type="file" accept="image/*" onchange="previewDailyDishImage(event)">
+            <img id="dailyDishFormImagePreview" class="menu-form-image-preview" alt="รูปกับข้าว" style="margin-top:8px">
+          </div>
+          <div class="menu-form-actions">
+            <button type="button" class="menu-form-cancel" onclick="closeDailyDishForm()">ยกเลิก</button>
+            <button type="submit" class="menu-form-save">💾 บันทึก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="specialMenuFormBackdrop" class="menu-form-backdrop" onclick="specialMenuFormBackdropClick(event)">
+    <div class="menu-form-panel">
+      <div class="menu-manager-head">
+        <div id="specialMenuFormTitle" class="menu-manager-head-title">⭐ เพิ่มเมนูพิเศษ</div>
+        <button class="menu-manager-close" onclick="closeSpecialMenuForm()">×</button>
+      </div>
+      <div class="menu-form-body">
+        <form class="menu-form-grid" onsubmit="saveSpecialMenuFromForm(event)">
+          <input id="specialMenuFormId" type="hidden">
+          <div><label>เริ่มขายวันที่</label><input id="specialMenuFormStart" class="date-input" type="date" required></div>
+          <div><label>ถึงวันที่</label><input id="specialMenuFormEnd" class="date-input" type="date" required></div>
+          <div><label>ชื่อเมนูพิเศษ</label><input id="specialMenuFormName" required maxlength="120" placeholder="เช่น ชุดข้าวน้ำพริก"></div>
+          <div><label>ราคา</label><input id="specialMenuFormPrice" type="number" min="0" step="1" required placeholder="60"></div>
+          <div><label>รายละเอียด</label><textarea id="specialMenuFormDescription" maxlength="400" placeholder="รายละเอียดชุดอาหาร"></textarea></div>
+          <div>
+            <label>รูปเมนูพิเศษ</label>
+            <input id="specialMenuFormImageFile" type="file" accept="image/*" onchange="previewSpecialMenuImage(event)">
+            <img id="specialMenuFormImagePreview" class="menu-form-image-preview" alt="รูปเมนูพิเศษ" style="margin-top:8px">
+          </div>
+          <div class="menu-form-actions">
+            <button type="button" class="menu-form-cancel" onclick="closeSpecialMenuForm()">ยกเลิก</button>
+            <button type="submit" class="menu-form-save">💾 บันทึก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="settingsBackdrop"
+    class="settings-backdrop"
+    onclick="settingsBackdropClick(event)"
+  >
+
+    <div class="settings-panel">
+
+      <div class="settings-head">
+        <div class="settings-head-title">⚙️ ตั้งค่าร้าน</div>
+        <button class="settings-close" onclick="closeSettings()">×</button>
+      </div>
+
+      <div class="settings-body">
+
+        <div class="settings-section">
+
+          <div class="settings-section-title">
+            💳 การชำระเงิน
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-title">💵 เงินสด</div>
+              <div class="settings-row-note">รับเงินสดที่หน้าร้าน</div>
+            </div>
+
+            <button
+              id="cashSettingBtn"
+              class="settings-toggle on"
+              onclick="togglePaymentSettingLocal('cashActive')"
+            >
+              🟢 เปิด
+            </button>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-title">📱 PromptPay</div>
+              <div class="settings-row-note">QR PromptPay</div>
+            </div>
+
+            <button
+              id="promptpaySettingBtn"
+              class="settings-toggle on"
+              onclick="togglePaymentSettingLocal('promptPayActive')"
+            >
+              🟢 เปิด
+            </button>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-title">🏛️ โครงการรัฐ / ถุงเงิน</div>
+              <div class="settings-row-note">เปิดเมื่อร้านรับชำระผ่านถุงเงิน</div>
+            </div>
+
+            <button
+              id="governmentSettingBtn"
+              class="settings-toggle off"
+              onclick="togglePaymentSettingLocal('governmentActive')"
+            >
+              🔴 ปิด
+            </button>
+          </div>
+
+          <div class="settings-field">
+            <label>ชื่อบัญชี PromptPay</label>
+            <input id="promptpayNameSetting">
+          </div>
+
+          <div class="settings-field">
+            <label>เบอร์ / เลข PromptPay</label>
+            <input id="promptpayNumberSetting" inputmode="numeric">
+          </div>
+
+          <div class="settings-field">
+            <label>QR ปัจจุบัน</label>
+            <img
+              id="settingsQrPreview"
+              class="settings-qr-preview"
+              style="display:none"
+              alt="QR PromptPay"
+            >
+          </div>
+
+          <div class="settings-field">
+            <label>เปลี่ยน QR</label>
+            <input
+              id="qrImageFile"
+              type="file"
+              accept="image/*"
+            >
+            <div class="settings-note">
+              เลือกรูป QR ใหม่จากเครื่อง ระบบจะอัปโหลดเข้า Google Drive
+            </div>
+          </div>
+
+          <div class="settings-field">
+            <label>หรือใส่ลิงก์ QR จาก Google Drive</label>
+            <input
+              id="promptpayQrUrlSetting"
+              placeholder="https://drive.google.com/..."
+            >
+          </div>
+
+          <div class="settings-actions">
+            <button
+              class="settings-action blue"
+              onclick="savePaymentSettingsFromUI()"
+            >
+              💾 บันทึกการชำระเงิน
+            </button>
+          </div>
+
+          <div class="settings-note">
+            การเปลี่ยน QR จะใช้กับหน้าชำระเงินหลังบันทึกสำเร็จ
+          </div>
+
+        </div>
+
+
+        <div class="settings-section">
+
+          <div class="settings-section-title">
+            🔊 การแจ้งเตือน
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-title">🗣️ เสียงแจ้งเตือน</div>
+              <div class="settings-row-note">
+                ใช้เสียงคนพูดตามระบบเดิม
+              </div>
+            </div>
+
+            <button
+              id="soundSettingBtn"
+              class="settings-toggle on"
+              onclick="toggleSoundSetting()"
+            >
+              🔊 เปิด
+            </button>
+          </div>
+
+          <div class="settings-actions">
+            <button
+              class="settings-action blue"
+              onclick="testConfiguredSound()"
+            >
+              🗣️ ทดสอบเสียง
+            </button>
+          </div>
+
+          <div class="settings-row">
+            <div>
+              <div class="settings-row-title">🔆 หน้าจอเปิดตลอด</div>
+              <div class="settings-row-note">
+                ป้องกันหน้าจอ Admin ดับระหว่างเปิดร้าน
+              </div>
+            </div>
+
+            <button
+              id="wakeSettingBtn"
+              class="settings-toggle off"
+              onclick="toggleWakeSetting()"
+            >
+              🌙 ปิด
+            </button>
+          </div>
+
+        </div>
+
+        <div class="version-note">
+          ระบบแนบสลิป/ตรวจสลิป ค่อยทำใน Version ถัดไป
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div
+      id="summary"
+      class="summary">
+    </div>
+
+    <div
+      id="app">
+
+      <div class="loading">
+
+        กำลังโหลดออเดอร์...
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+     * =====================================
+     * API URL
+     * =====================================
+     *
+     * ใช้ URL /exec ตัวเดียวกับระบบ LIFF
+     */
+
+
+    /* =========================================
+     * ADMIN PIN GATE
+     * ========================================= */
+
+    const ADMIN_PIN_ = "8899";
+    const ADMIN_SESSION_KEY_ =
+      "restaurantAdminUnlockedUntil";
+
+    const ADMIN_SESSION_MS_ =
+      8 * 60 * 60 * 1000;
+
+
+    function adminIsUnlocked_() {
+
+      const raw =
+        localStorage.getItem(
+          ADMIN_SESSION_KEY_
+        );
+
+      if (!raw) {
+        return false;
+      }
+
+      const until =
+        Number(raw);
+
+      return (
+        Number.isFinite(until) &&
+        until > Date.now()
+      );
+
+    }
+
+
+    function showAdminApp_() {
+
+      const lock =
+        document.getElementById(
+          "adminLock"
+        );
+
+      if (lock) {
+        lock.classList.add(
+          "hidden"
+        );
+      }
+
+    }
+
+
+    function showAdminLock_() {
+
+      const lock =
+        document.getElementById(
+          "adminLock"
+        );
+
+      if (lock) {
+        lock.classList.remove(
+          "hidden"
+        );
+      }
+
+    }
+
+
+    async function unlockAdmin(
+      event
+    ) {
+
+      event.preventDefault();
+
+      const input =
+        document.getElementById(
+          "adminPinInput"
+        );
+
+      const error =
+        document.getElementById(
+          "adminPinError"
+        );
+
+      const value =
+        String(
+          input?.value || ""
+        ).trim();
+
+
+      if (
+        !/^\d{4,6}$/.test(
+          value
+        )
+      ) {
+
+        if (error) {
+          error.textContent =
+            "กรุณาใส่ PIN 4-6 หลัก";
+        }
+
+        return false;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+              body:
+                JSON.stringify({
+                  action:
+                    "loginAdmin",
+                  pin:
+                    value
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !result ||
+          !result.success ||
+          !result.token
+        ) {
+
+          throw new Error(
+            result &&
+            result.error
+              ? result.error
+              : "เข้าสู่ระบบ Admin ไม่สำเร็จ"
+          );
+
+        }
+
+
+        sessionStorage.setItem(
+          "adminAuthToken",
+          result.token
+        );
+
+
+        localStorage.setItem(
+          ADMIN_SESSION_KEY_,
+          String(
+            result.expiresAt
+          )
+        );
+
+
+        if (error) {
+          error.textContent = "";
+        }
+
+        if (input) {
+          input.value = "";
+        }
+
+
+        showAdminApp_();
+
+
+        // Load Admin data only after backend auth succeeds.
+        if (
+          typeof loadAdminOrders ===
+          "function"
+        ) {
+          await loadAdminOrders();
+        }
+
+
+      } catch (loginError) {
+
+        if (error) {
+
+          error.textContent =
+            loginError.message ||
+            String(loginError);
+
+        }
+
+        if (input) {
+
+          input.value = "";
+
+          input.focus();
+
+        }
+
+      }
+
+
+      return false;
+
+    }
+
+
+    function lockAdmin() {
+
+      const token =
+        sessionStorage.getItem(
+          "adminAuthToken"
+        );
+
+
+      if (token) {
+
+        fetch(
+          API_URL,
+          {
+            method:
+              "POST",
+            headers: {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+            body:
+              JSON.stringify({
+                action:
+                  "logoutAdmin",
+                token:
+                  token
+              })
+          }
+        ).catch(
+          function(error) {
+            console.warn(
+              "Logout backend error:",
+              error
+            );
+          }
+        );
+
+      }
+
+
+      sessionStorage.removeItem(
+        "adminAuthToken"
+      );
+
+      localStorage.removeItem(
+        ADMIN_SESSION_KEY_
+      );
+
+      showAdminLock_();
+
+
+      const input =
+        document.getElementById(
+          "adminPinInput"
+        );
+
+      if (input) {
+
+        input.value = "";
+
+        setTimeout(
+          function(){
+            input.focus();
+          },
+          50
+        );
+
+      }
+
+    }
+
+
+function initializeAdminLock_() {
+
+      const token =
+        sessionStorage.getItem(
+          "adminAuthToken"
+        );
+
+
+      if (
+        !token
+      ) {
+
+        localStorage.removeItem(
+          ADMIN_SESSION_KEY_
+        );
+
+        showAdminLock_();
+
+        setTimeout(
+          function(){
+
+            const input =
+              document.getElementById(
+                "adminPinInput"
+              );
+
+            if (input) {
+              input.focus();
+            }
+
+          },
+          50
+        );
+
+        return;
+
+      }
+
+
+      if (
+        adminIsUnlocked_()
+      ) {
+
+        showAdminApp_();
+
+      } else {
+
+        showAdminLock_();
+
+        setTimeout(
+          function(){
+
+            const input =
+              document.getElementById(
+                "adminPinInput"
+              );
+
+            if (input) {
+              input.focus();
+            }
+
+          },
+          50
+        );
+
+      }
+
+    }
+
+
+
+    function adminAuthToken_() {
+
+      return sessionStorage.getItem(
+        "adminAuthToken"
+      ) || "";
+
+    }
+
+
+    function adminAuthHeaders_() {
+
+      return {
+        "Content-Type":
+          "text/plain;charset=utf-8"
+      };
+
+    }
+
+
+    async function adminFetchJson_(
+      url,
+      options
+    ) {
+
+      const opts =
+        Object.assign(
+          {
+            headers:
+              adminAuthHeaders_()
+          },
+          options || {}
+        );
+
+
+      const response =
+        await fetch(
+          url,
+          opts
+        );
+
+
+      if (
+        response.status ===
+        401
+      ) {
+
+        lockAdmin();
+
+        throw new Error(
+          "Admin Session หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+        );
+
+      }
+
+
+      return response.json();
+
+    }
+
+
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycby630JecNzApWvBQCY1mpsA4rS9tMHqtKidSmcE5Vz4GsVwfOHu2mKE0hmHkJ00HfdA/exec';
+
+
+    let orders = [];
+    
+    let currentFilter = 'ALL';
+
+    /*
+     * =====================================
+     * สรุปจำนวน
+     * =====================================
+     */
+
+    function renderSummary() {
+
+      const countNew =
+        orders.filter(
+          function(order) {
+            return order.status === 'NEW';
+          }
+        ).length;
+    
+    
+      const countPreparing =
+        orders.filter(
+          function(order) {
+            return order.status === 'PREPARING';
+          }
+        ).length;
+    
+    
+      const countReady =
+        orders.filter(
+          function(order) {
+            return order.status === 'READY';
+          }
+        ).length;
+    
+    
+      const countCompleted =
+        orders.filter(
+          function(order) {
+            return order.status === 'COMPLETED';
+          }
+        ).length;
+    
+    
+      document
+        .getElementById('summary')
+        .innerHTML = `
+    
+          <div
+            class="summary-card ${
+              currentFilter === 'NEW'
+                ? 'active'
+                : ''
+            }"
+            onclick="setOrderFilter('NEW')">
+    
+            <div class="summary-number">
+              ${countNew}
+            </div>
+    
+            <div class="summary-label">
+              🆕 ออเดอร์ใหม่
+            </div>
+    
+          </div>
+    
+    
+          <div
+            class="summary-card ${
+              currentFilter === 'PREPARING'
+                ? 'active'
+                : ''
+            }"
+            onclick="setOrderFilter('PREPARING')">
+    
+            <div class="summary-number">
+              ${countPreparing}
+            </div>
+    
+            <div class="summary-label">
+              👨‍🍳 กำลังทำ
+            </div>
+    
+          </div>
+    
+    
+          <div
+            class="summary-card ${
+              currentFilter === 'READY'
+                ? 'active'
+                : ''
+            }"
+            onclick="setOrderFilter('READY')">
+    
+            <div class="summary-number">
+              ${countReady}
+            </div>
+    
+            <div class="summary-label">
+              ✅ พร้อมรับ
+            </div>
+    
+          </div>
+    
+    
+          <div
+            class="summary-card ${
+              currentFilter === 'COMPLETED'
+                ? 'active'
+                : ''
+            }"
+            onclick="setOrderFilter('COMPLETED')">
+    
+            <div class="summary-number">
+              ${countCompleted}
+            </div>
+    
+            <div class="summary-label">
+              ✔️ เสร็จแล้ว
+            </div>
+    
+          </div>
+    
+        `;
+    
+    }
+
+
+    /*
+     * =====================================
+     * แสดงออเดอร์
+     * =====================================
+     */
+
+    function renderOrders() {
+
+      const app =
+        document.getElementById('app');
+    
+    
+      if (!orders || orders.length === 0) {
+    
+        app.innerHTML = `
+          <div class="empty">
+            📭 วันนี้ยังไม่มีออเดอร์
+          </div>
+        `;
+    
+        return;
+      }
+    
+    
+      /*
+       * =====================================
+       * กรองออเดอร์ตามสถานะ
+       * =====================================
+       */
+    
+      let filteredOrders;
+    
+    
+      if (currentFilter === 'ALL') {
+    
+        filteredOrders =
+          orders.slice();
+    
+      } else {
+    
+        filteredOrders =
+          orders.filter(
+            function(order) {
+    
+              return (
+                String(order.status || '')
+                  .toUpperCase() ===
+                currentFilter
+              );
+    
+            }
+          );
+    
+      }
+    
+    
+      /*
+       * =====================================
+       * ถ้าไม่มีออเดอร์ในสถานะที่เลือก
+       * =====================================
+       */
+    
+      if (
+        filteredOrders.length === 0
+      ) {
+    
+        const filterNames = {
+    
+          NEW:
+            '🆕 ออเดอร์ใหม่',
+    
+          PREPARING:
+            '👨‍🍳 กำลังทำ',
+    
+          READY:
+            '✅ พร้อมรับ',
+    
+          COMPLETED:
+            '✔️ เสร็จแล้ว'
+    
+        };
+    
+    
+        app.innerHTML = `
+    
+          <div class="empty">
+    
+            ${
+              currentFilter === 'ALL'
+                ? '📭 วันนี้ยังไม่มีออเดอร์'
+                : (
+                    'ไม่มีออเดอร์ในสถานะ ' +
+                    (
+                      filterNames[
+                        currentFilter
+                      ] ||
+                      currentFilter
+                    )
+                  )
+            }
+    
+          </div>
+    
+        `;
+    
+        return;
+      }
+    
+    
+      /*
+       * =====================================
+       * แบ่งกลุ่มสำหรับหน้า ALL
+       * =====================================
+       */
+    
+      const groups = [
+    
+        {
+          status: 'NEW',
+          title: '🆕 ออเดอร์ใหม่'
+        },
+    
+        {
+          status: 'PREPARING',
+          title: '👨‍🍳 กำลังทำ'
+        },
+    
+        {
+          status: 'READY',
+          title: '✅ พร้อมรับ'
+        },
+    
+        {
+          status: 'COMPLETED',
+          title: '✔️ เสร็จแล้ว'
+        },
+    
+        {
+          status: 'CANCELLED',
+          title: '❌ ยกเลิก'
+        }
+    
+      ];
+    
+    
+      let html = '';
+    
+    
+      /*
+       * =====================================
+       * ถ้าเลือกสถานะเฉพาะ
+       * แสดงแค่หัวข้อเดียว
+       * =====================================
+       */
+    
+      if (
+        currentFilter !== 'ALL'
+      ) {
+    
+        const group =
+          groups.find(
+            function(item) {
+    
+              return (
+                item.status ===
+                currentFilter
+              );
+    
+            }
+          );
+    
+    
+        const title =
+          group
+            ? group.title
+            : currentFilter;
+    
+    
+        html += `
+    
+          <div class="section">
+    
+            <div class="section-title">
+              ${title}
+            </div>
+    
+        `;
+    
+    
+        filteredOrders.forEach(
+          function(order) {
+    
+            html +=
+              renderOrderCard(order);
+    
+          }
+        );
+    
+    
+        html += `
+    
+          </div>
+    
+        `;
+    
+    
+      } else {
+    
+        /*
+         * =====================================
+         * หน้า ALL
+         * แสดงทุกสถานะเป็นกลุ่ม
+         * =====================================
+         */
+    
+        groups.forEach(
+          function(group) {
+    
+            const groupOrders =
+              filteredOrders.filter(
+                function(order) {
+    
+                  return (
+                    String(
+                      order.status || ''
+                    ).toUpperCase() ===
+                    group.status
+                  );
+    
+                }
+              );
+    
+    
+            if (
+              groupOrders.length === 0
+            ) {
+    
+              return;
+    
+            }
+    
+    
+            html += `
+    
+              <div class="section">
+    
+                <div class="section-title">
+                  ${group.title}
+                </div>
+    
+            `;
+    
+    
+            groupOrders.forEach(
+              function(order) {
+    
+                html +=
+                  renderOrderCard(order);
+    
+              }
+            );
+    
+    
+            html += `
+    
+              </div>
+    
+            `;
+    
+          }
+        );
+    
+      }
+    
+    
+      app.innerHTML =
+        html ||
+        `
+          <div class="empty">
+            ไม่มีออเดอร์ที่ต้องดำเนินการ
+          </div>
+        `;
+    
+    }
+
+    function setOrderFilter(
+      filter
+    ) {
+    
+      if (
+        currentFilter === filter
+      ) {
+    
+        currentFilter = 'ALL';
+    
+      } else {
+    
+        currentFilter = filter;
+    
+      }
+    
+    
+      renderSummary();
+    
+      renderOrders();
+    
+    }
+
+
+    /*
+     * =====================================
+     * การ์ดออเดอร์
+     * =====================================
+     */
+
+    function renderOrderCard(
+      order
+    ) {
+
+      const statusClass =
+        getStatusClass(
+          order.status
+        );
+
+
+      const statusText =
+        getStatusText(
+          order.status
+        );
+
+
+      let pickupText =
+        'รับตอนนี้';
+      
+      
+      if (
+        order.pickupType ===
+        'SCHEDULED'
+      ) {
+      
+        pickupText =
+          '🕐 รับเวลา ' +
+          (
+            order.pickupTime ||
+            order.pickupSlot ||
+            '-'
+          );
+      
+      }
+
+
+      let itemsHtml = '';
+
+
+      (
+        order.items || []
+      ).forEach(
+        function(item) {
+
+          let optionText =
+            item.options || '';
+
+
+          let remarkText =
+            item.remark || '';
+
+
+          itemsHtml += `
+
+            <div class="item">
+
+              <div class="item-name">
+
+                ${escapeHtml(
+                  item.menuName
+                )}
+
+                ×
+                ${Number(
+                  item.qty
+                )}
+
+              </div>
+
+
+              ${
+                optionText
+                  ? `
+                    <div class="item-detail">
+
+                      ตัวเลือก:
+                      ${escapeHtml(
+                        optionText
+                      )}
+
+                    </div>
+                  `
+                  : ''
+              }
+
+
+              ${
+                remarkText
+                  ? `
+                    <div class="item-detail">
+
+                      📝
+                      ${escapeHtml(
+                        remarkText
+                      )}
+
+                    </div>
+                  `
+                  : ''
+              }
+
+            </div>
+
+          `;
+
+        }
+      );
+
+
+      return `
+
+        <div class="order-card">
+
+          <div class="order-top">
+
+            <div>
+
+              <div class="order-id">
+
+                ${escapeHtml(
+                  order.orderId
+                )}
+
+              </div>
+
+
+              <div class="order-time">
+
+                สั่งเวลา
+                ${escapeHtml(
+                  order.time
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="status ${statusClass}">
+
+              ${statusText}
+
+            </div>
+
+          </div>
+
+
+          <div class="customer">
+
+            👤
+            ${escapeHtml(
+              order.customerName ||
+              '-'
+            )}
+
+          </div>
+
+
+          <div class="pickup">
+
+            ${escapeHtml(
+              pickupText
+            )}
+
+          </div>
+
+
+          <div class="items">
+
+            ${itemsHtml}
+
+          </div>
+
+
+          ${
+            order.remark
+              ? `
+                <div class="remark">
+
+                  📝 หมายเหตุ:
+                  ${escapeHtml(
+                    order.remark
+                  )}
+
+                </div>
+              `
+              : ''
+          }
+
+
+          <div class="order-bottom">
+
+            <div>
+
+              <div class="total">
+
+                ${Number(
+                  order.total
+                ).toLocaleString()}
+
+                บาท
+
+              </div>
+
+
+              <div class="payment">
+
+                ${
+                  order.payment ===
+                  'CASH'
+                    ? '💵 เงินสด'
+                    : '📱 QR Payment'
+                }
+
+                ${renderPaymentStatus(order)}
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          ${renderActions(order)}
+
+        </div>
+
+      `;
+
+    }
+
+
+    /*
+     * =====================================
+     * ปุ่มเปลี่ยนสถานะ
+     * =====================================
+     */
+
+    function renderActions(order) {
+
+      let orderActions = '';
+
+      if (order.status === 'NEW') {
+
+        orderActions = `
+          <div class="actions">
+
+            <button
+              class="btn btn-primary"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'PREPARING'
+                )
+              ">
+
+              👨‍🍳 รับออเดอร์
+
+            </button>
+
+            <button
+              class="btn btn-red"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'CANCELLED'
+                )
+              ">
+
+              ❌ ยกเลิก
+
+            </button>
+
+          </div>
+        `;
+
+      } else if (order.status === 'PREPARING') {
+        orderActions = `
+          <div class="actions">
+      
+            <button
+              class="btn btn-blue"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'READY'
+                )
+              ">
+              ✅ พร้อมรับ
+            </button>
+      
+            <button
+              class="btn btn-red"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'CANCELLED'
+                )
+              ">
+              ❌ ยกเลิก
+            </button>
+      
+          </div>
+        `;
+
+      } else if (order.status === 'READY') {
+        orderActions = `
+          <div class="actions">
+      
+            <button
+              class="btn btn-primary"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'COMPLETED'
+                )
+              ">
+              ✔️ ลูกค้ารับแล้ว
+            </button>
+      
+            <button
+              class="btn btn-red"
+              onclick="
+                updateStatus(
+                  '${escapeJs(order.orderId)}',
+                  '${escapeJs(order.date)}',
+                  'CANCELLED'
+                )
+              ">
+              ❌ ยกเลิก
+            </button>
+      
+          </div>
+        `;
+
+      } else if (order.status === 'COMPLETED') {
+
+        orderActions = `
+          <div class="actions">
+
+            <div
+              style="
+                width:100%;
+                text-align:center;
+                padding:10px;
+                color:#666;
+                background:#f3f3f3;
+                border-radius:9px;
+              ">
+
+              ✔️ ออเดอร์เสร็จสิ้น
+
+            </div>
+
+          </div>
+        `;
+
+      } else if (order.status === 'CANCELLED') {
+
+        orderActions = `
+          <div class="actions">
+
+            <div
+              style="
+                width:100%;
+                text-align:center;
+                padding:10px;
+                color:#b00020;
+                background:#ffe8e8;
+                border-radius:9px;
+              ">
+
+              ❌ ออเดอร์ถูกยกเลิก
+
+            </div>
+
+          </div>
+        `;
+
+      }
+
+      /*
+       * Payment actions are intentionally independent
+       * from order status, so COMPLETED orders can still
+       * be marked PAID.
+       */
+
+      return (
+        orderActions +
+        renderPaymentActions(order)
+      );
+
+    }
+
+
+    function renderPaymentStatus(order) {
+
+      const status =
+        String(
+          order.paymentStatus ||
+          'UNPAID'
+        ).toUpperCase();
+
+      const map = {
+
+        UNPAID: {
+          text: '🔴 ยังไม่ชำระ',
+          cls: 'payment-unpaid'
+        },
+
+        PENDING: {
+          text: '🟡 รอตรวจสอบ',
+          cls: 'payment-pending'
+        },
+
+        PAID: {
+          text: '🟢 ชำระแล้ว',
+          cls: 'payment-paid'
+        },
+
+        REFUNDED: {
+          text: '⚪ คืนเงินแล้ว',
+          cls: 'payment-refunded'
+        }
+
+      };
+
+      const item =
+        map[status] ||
+        map.UNPAID;
+
+      return `
+        <div
+          class="payment-status ${item.cls}"
+        >
+          ${item.text}
+        </div>
+      `;
+
+    }
+
+
+    function renderPaymentActions(order) {
+
+      if (
+        String(order.status || '')
+          .toUpperCase() ===
+        'CANCELLED'
+      ) {
+
+        return '';
+
+      }
+
+      const paymentStatus =
+        String(
+          order.paymentStatus ||
+          'UNPAID'
+        ).toUpperCase();
+
+      let buttons = '';
+
+      if (paymentStatus !== 'PAID') {
+
+        buttons += `
+          <button
+            class="payment-btn payment-btn-green"
+            onclick="
+              updatePaymentStatus(
+                '${escapeJs(order.orderId)}',
+                '${escapeJs(order.date)}',
+                'PAID'
+              )
+            "
+          >
+            💰 รับชำระแล้ว
+          </button>
+        `;
+
+      }
+
+      /*
+       * PENDING ใช้กับการชำระแบบ QR เท่านั้น
+       * เงินสดที่ PAID แล้วไม่ควรมีปุ่ม "รอตรวจสอบ"
+       */
+      if (
+        paymentStatus !== 'PENDING' &&
+        paymentStatus !== 'PAID' &&
+        order.payment !== 'CASH'
+      ) {
+
+        buttons += `
+          <button
+            class="payment-btn payment-btn-yellow"
+            onclick="
+              updatePaymentStatus(
+                '${escapeJs(order.orderId)}',
+                '${escapeJs(order.date)}',
+                'PENDING'
+              )
+            "
+          >
+            ⏳ รอตรวจสอบ
+          </button>
+        `;
+
+      }
+
+      if (
+        paymentStatus === 'PAID'
+      ) {
+
+        buttons += `
+          <button
+            class="payment-btn payment-btn-gray"
+            onclick="
+              updatePaymentStatus(
+                '${escapeJs(order.orderId)}',
+                '${escapeJs(order.date)}',
+                'REFUNDED'
+              )
+            "
+          >
+            ↩️ คืนเงิน
+          </button>
+        `;
+
+      }
+
+      if (
+        paymentStatus === 'REFUNDED'
+      ) {
+
+        buttons += `
+          <button
+            class="payment-btn payment-btn-green"
+            onclick="
+              updatePaymentStatus(
+                '${escapeJs(order.orderId)}',
+                '${escapeJs(order.date)}',
+                'PAID'
+              )
+            "
+          >
+            ↩️ เปลี่ยนกลับเป็นชำระแล้ว
+          </button>
+        `;
+
+      }
+
+      if (!buttons) {
+        return '';
+      }
+
+      return `
+        <div
+          style="
+            margin-top:10px;
+            padding-top:10px;
+            border-top:1px dashed #ddd;
+          "
+        >
+
+          <div
+            style="
+              font-size:12px;
+              color:#777;
+              margin-bottom:4px;
+              font-weight:bold;
+            "
+          >
+            💳 การชำระเงิน
+          </div>
+
+          <div class="payment-actions">
+            ${buttons}
+          </div>
+
+        </div>
+      `;
+
+    }
+
+
+    /*
+     * =====================================
+     * ส่งเปลี่ยนสถานะ
+     * =====================================
+     */
+
+    const updatingOrderStatus_ =
+      new Set();
+
+    async function updateStatus(
+      orderId,
+      orderDate,
+      status
+    ) {
+    
+      const key =
+        String(orderDate) +
+        '|' +
+        String(orderId);
+    
+      // กันกดซ้ำขณะกำลังบันทึก
+      if (updatingOrderStatus_.has(key)) {
+        return;
+      }
+    
+      const statusNames = {
+        PREPARING: 'กำลังทำ',
+        READY: 'พร้อมรับ',
+        COMPLETED: 'เสร็จแล้ว',
+        CANCELLED: 'ยกเลิก'
+      };
+    
+      const text =
+        statusNames[status] ||
+        status;
+    
+      if (
+        !confirm(
+          'เปลี่ยน ' +
+          orderId +
+          ' เป็น "' +
+          text +
+          '" ?'
+        )
+      ) {
+        return;
+      }
+    
+      updatingOrderStatus_.add(key);
+    
+      try {
+    
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: 'POST',
+    
+              headers: {
+                'Content-Type':
+                  'text/plain;charset=utf-8'
+              },
+    
+              body:
+                JSON.stringify({
+                  action:
+                    'updateOrderStatus',
+    
+                  adminToken:
+                    adminAuthToken_(),
+    
+                  orderId:
+                    orderId,
+    
+                  orderDate:
+                    orderDate,
+    
+                  status:
+                    status
+                })
+            }
+          );
+    
+        if (!response.ok) {
+          throw new Error(
+            'Backend HTTP Error: ' +
+            response.status
+          );
+        }
+    
+        const textResponse =
+          await response.text();
+    
+        let result;
+    
+        try {
+          result =
+            JSON.parse(
+              textResponse
+            );
+        } catch (parseError) {
+    
+          console.error(
+            'UPDATE STATUS RAW RESPONSE:',
+            textResponse
+          );
+    
+          throw new Error(
+            'Backend ตอบกลับไม่ถูกต้อง กรุณารอสักครู่แล้วลองใหม่'
+          );
+        }
+    
+        if (!result.success) {
+          throw new Error(
+            result.error ||
+            'เปลี่ยนสถานะไม่สำเร็จ'
+          );
+        }
+    
+        // =====================================
+        // อัปเดตหน้าจอทันที
+        // ไม่ต้องรอ Auto Refresh
+        // =====================================
+    
+        const localOrder =
+          orders.find(
+            function(order) {
+    
+              return String(
+                order.orderId
+              ) === String(orderId);
+    
+            }
+          );
+    
+        if (localOrder) {
+          localOrder.status =
+            status;
+        }
+    
+        renderSummary();
+        renderOrders();
+    
+      } catch (error) {
+    
+        console.error(
+          'UPDATE STATUS ERROR:',
+          error
+        );
+    
+        alert(
+          error.message ||
+          String(error)
+        );
+    
+      } finally {
+    
+        updatingOrderStatus_.delete(
+          key
+        );
+    
+      }
+    
+    }
+
+
+    const updatingPaymentStatus_ =
+      new Set();
+
+
+async function updatePaymentStatus(
+  orderId,
+  orderDate,
+  paymentStatus
+) {
+
+  const key =
+    String(orderDate) +
+    '|' +
+    String(orderId);
+
+  // กันกดสถานะการเงินซ้ำ
+  if (
+    updatingPaymentStatus_.has(key)
+  ) {
+    return;
+  }
+
+  const names = {
+    UNPAID: 'ยังไม่ชำระ',
+    PENDING: 'รอตรวจสอบ',
+    PAID: 'ชำระแล้ว',
+    REFUNDED: 'คืนเงินแล้ว'
+  };
+
+  const target =
+    names[paymentStatus] ||
+    paymentStatus;
+
+  if (
+    !confirm(
+      'เปลี่ยนสถานะการชำระเงินของ ' +
+      orderId +
+      ' เป็น "' +
+      target +
+      '" ?'
+    )
+  ) {
+    return;
+  }
+
+  updatingPaymentStatus_.add(key);
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'text/plain;charset=utf-8'
+          },
+
+          body:
+            JSON.stringify({
+              action:
+                'updatePaymentStatus',
+
+              adminToken:
+                adminAuthToken_(),
+
+              orderId:
+                orderId,
+
+              orderDate:
+                orderDate,
+
+              paymentStatus:
+                paymentStatus
+            })
+        }
+      );
+
+    if (!response.ok) {
+      throw new Error(
+        'Backend HTTP Error: ' +
+        response.status
+      );
+    }
+
+    const textResponse =
+      await response.text();
+
+    let result;
+
+    try {
+
+      result =
+        JSON.parse(
+          textResponse
+        );
+
+    } catch (parseError) {
+
+      console.error(
+        'UPDATE PAYMENT RAW RESPONSE:',
+        textResponse
+      );
+
+      throw new Error(
+        'Backend ตอบกลับไม่ถูกต้อง กรุณารอสักครู่แล้วลองใหม่'
+      );
+    }
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'เปลี่ยนสถานะการชำระเงินไม่สำเร็จ'
+      );
+
+    }
+
+    // อัปเดตหน้าจอทันที
+    const localOrder =
+      orders.find(
+        function(order) {
+
+          return String(
+            order.orderId
+          ) === String(orderId);
+
+        }
+      );
+
+    if (localOrder) {
+
+      localOrder.paymentStatus =
+        paymentStatus;
+
+    }
+
+    renderSummary();
+    renderOrders();
+
+
+  } catch (error) {
+
+    console.error(
+      'PAYMENT STATUS ERROR:',
+      error
+    );
+
+    alert(
+      error.message ||
+      String(error)
+    );
+
+  } finally {
+
+    updatingPaymentStatus_.delete(
+      key
+    );
+
+  }
+
+}
+
+    /*
+     * =====================================
+     * Helpers
+     * =====================================
+     */
+
+    function getStatusClass(
+      status
+    ) {
+
+      if (
+        status === 'NEW'
+      ) {
+
+        return 'status-new';
+
+      }
+
+
+      if (
+        status ===
+        'PREPARING'
+      ) {
+
+        return 'status-preparing';
+
+      }
+
+
+      if (
+        status === 'READY'
+      ) {
+
+        return 'status-ready';
+
+      }
+
+
+      return 'status-completed';
+
+    }
+
+
+    function getStatusText(
+      status
+    ) {
+
+      const map = {
+
+        NEW:
+          '🆕 ใหม่',
+
+        PREPARING:
+          '👨‍🍳 กำลังทำ',
+
+        READY:
+          '✅ พร้อมรับ',
+
+        COMPLETED:
+          '✔️ เสร็จแล้ว',
+
+        CANCELLED:
+          '❌ ยกเลิก'
+
+      };
+
+
+      return (
+        map[status] ||
+        status
+      );
+
+    }
+
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ''
+      )
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+      .replace(
+        /</g,
+        '&lt;'
+      )
+      .replace(
+        />/g,
+        '&gt;'
+      )
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+
+    }
+
+
+    function escapeJs(
+      value
+    ) {
+
+      return String(
+        value ?? ''
+      )
+      .replace(
+        /\\/g,
+        '\\\\'
+      )
+      .replace(
+        /'/g,
+        "\\'"
+      );
+
+    }
+
+
+    /*
+     * =====================================
+     * เริ่มต้น
+     * =====================================
+     */
+
+
+
+    /* =====================================
+     * MENU MANAGER V2
+     * MAIN + DAILY DISHES + SPECIAL MENUS
+     * ===================================== */
+
+    let adminMenus_ = [];
+    let adminDailyDishes_ = [];
+    let adminSpecialMenus_ = [];
+    let menuManagerTab_ = 'main';
+    let menuFormImageUrl_ = '';
+    let dailyDishImageUrl_ = '';
+    let specialMenuImageUrl_ = '';
+
+
+    function todayYmd_() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+    }
+
+
+    async function openMenuManager() {
+      const modal=document.getElementById('menuManagerBackdrop');
+      if (!modal) return;
+      modal.classList.add('show');
+      try {
+        await loadMenuSystemData_();
+        const dateEl=document.getElementById('dailyDateInput');
+        if (dateEl && !dateEl.value) dateEl.value=todayYmd_();
+        selectMenuManagerTab(menuManagerTab_);
+      } catch(error) {
+        alert(error.message || String(error));
+      }
+    }
+
+
+    function closeMenuManager() {
+      const modal=document.getElementById('menuManagerBackdrop');
+      if(modal) modal.classList.remove('show');
+      closeMenuForm(); closeDailyDishForm(); closeSpecialMenuForm();
+    }
+
+
+    function menuManagerBackdropClick(event) {
+      if(event.target && event.target.id==='menuManagerBackdrop') closeMenuManager();
+    }
+
+
+    function selectMenuManagerTab(tab) {
+
+      menuManagerTab_ = tab;
+    
+      ['main','daily','special'].forEach(function(name){
+    
+        const btn =
+          document.getElementById(
+            'menuTab' +
+            name.charAt(0).toUpperCase() +
+            name.slice(1)
+          );
+    
+        const panel =
+          document.getElementById(
+            'menuPanel' +
+            name.charAt(0).toUpperCase() +
+            name.slice(1)
+          );
+    
+        if (btn) {
+          btn.classList.toggle(
+            'active',
+            name === tab
+          );
+        }
+    
+        if (panel) {
+          panel.classList.toggle(
+            'show',
+            name === tab
+          );
+        }
+    
+      });
+    
+    
+      // แสดงปุ่มจัดการคลังเฉพาะแท็บ "แกงวันนี้"
+      const dailyToolbar =
+        document.getElementById(
+          'dailyDishToolbar'
+        );
+    
+      if (dailyToolbar) {
+    
+        dailyToolbar.style.display =
+          tab === 'daily'
+            ? 'flex'
+            : 'none';
+    
+      }
+    
+    
+      if (tab === 'main') {
+        renderMenuManager();
+      }
+    
+      if (tab === 'daily') {
+        renderDailyDishList();
+      }
+    
+      if (tab === 'special') {
+        renderSpecialMenuList();
+      }
+    
+    }
+
+
+    async function loadMenuSystemData_() {
+      const response=await fetch(API_URL+'?action=getMenuSystemData&adminToken=' +
+                                  encodeURIComponent(
+                                    adminAuthToken_()
+                                  ),
+                                  {
+                                    method:'GET'
+      });
+      if(!response.ok) throw new Error('โหลดระบบเมนูไม่สำเร็จ');
+      const result=await response.json();
+      if(!result || !result.success) throw new Error(result && result.error ? result.error : 'โหลดระบบเมนูไม่สำเร็จ');
+      adminMenus_=Array.isArray(result.menus)?result.menus:[];
+      adminDailyDishes_=Array.isArray(result.dailyDishes)?result.dailyDishes:[];
+      adminSpecialMenus_=Array.isArray(result.specialMenus)?result.specialMenus:[];
+      return result;
+    }
+
+
+    function renderMenuManager() {
+      const list=document.getElementById('menuManagerList');
+      if(!list) return;
+      const search=String(document.getElementById('menuSearchInput')?.value||'').trim().toLowerCase();
+      const filter=String(document.getElementById('menuStatusFilter')?.value||'ALL');
+      const visible=adminMenus_.filter(function(menu){
+        const matches=!search || String(menu.name||'').toLowerCase().includes(search) || String(menu.category||'').toLowerCase().includes(search);
+        if(!matches) return false;
+        if(filter==='ON') return !!menu.available;
+        if(filter==='OFF') return !menu.available;
+        return true;
+      });
+      if(!visible.length){list.innerHTML='<div class="menu-empty">ยังไม่มีเมนูที่ตรงกับการค้นหา</div>';return;}
+      list.innerHTML=visible.map(function(menu){
+        const image=String(menu.image||'');
+        return `<div class="menu-item-card">
+          ${image ? `<img class="menu-item-image" src="${escapeHtml(image)}" alt="${escapeHtml(menu.name)}">` : `<div class="menu-item-image empty">🍛</div>`}
+          <div>
+            <div class="menu-item-name">${escapeHtml(menu.name||'-')}</div>
+            <div class="menu-item-meta">${Number(menu.price||0).toLocaleString('th-TH')} บาท${menu.category?' • '+escapeHtml(menu.category):''}</div>
+            <div class="menu-item-status ${menu.available?'on':'off'}">${menu.available?'🟢 กำลังขาย':'🔴 ปิดขาย / ของหมด'}</div>
+          </div>
+          <div class="menu-item-actions">
+            <button class="menu-action-btn menu-action-edit" onclick="openMenuForm('${escapeJs(menu.id)}')">✏️ แก้ไข</button>
+            ${menu.available ? `<button class="menu-action-btn menu-action-off" onclick="toggleMenuAvailability('${escapeJs(menu.id)}',false)">🔴 ปิดขาย</button>` : `<button class="menu-action-btn menu-action-on" onclick="toggleMenuAvailability('${escapeJs(menu.id)}',true)">🟢 เปิดขาย</button>`}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+
+    async function installRecommendedMenus() {
+      const ok=confirm('ระบบจะสำรอง Menu และ Menu_Options เดิม แล้วติดตั้งชุดเมนูแนะนำใหม่\n\nต้องการทำต่อหรือไม่?');
+      if(!ok) return;
+      try{
+        const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'installRecommendedMenuSystem',
+                          adminToken:
+                            adminAuthToken_(),confirm:'YES'})});
+        const result=await response.json();
+        if(!result.success) throw new Error(result.error||'ติดตั้งเมนูไม่สำเร็จ');
+        alert('ติดตั้งเมนูแนะนำสำเร็จ\nเมนู '+result.mainMenus+' รายการ\nตัวเลือก '+result.options+' รายการ');
+        await loadMenuSystemData_();
+        selectMenuManagerTab('main');
+        if(typeof loadOrders==='function') loadOrders();
+      }catch(error){alert(error.message||String(error));}
+    }
+
+
+    function findAdminMenu_(menuId){return adminMenus_.find(function(menu){return String(menu.id)===String(menuId);});}
+
+    function openMenuForm(menuId){
+      const modal=document.getElementById('menuFormBackdrop'); if(!modal)return;
+      const menu=menuId?findAdminMenu_(menuId):null;
+      document.getElementById('menuFormTitle').textContent=menu?'✏️ แก้ไขเมนู':'➕ เพิ่มเมนู';
+      document.getElementById('menuFormId').value=menu?String(menu.id):'';
+      document.getElementById('menuFormName').value=menu?String(menu.name||''):'';
+      document.getElementById('menuFormPrice').value=menu?String(menu.price||0):'';
+      document.getElementById('menuFormCategory').value=menu?String(menu.category||''):'';
+      document.getElementById('menuFormDescription').value=menu?String(menu.description||''):'';
+      menuFormImageUrl_=menu?String(menu.image||''):'';
+      document.getElementById('menuFormImageFile').value='';
+      document.getElementById('menuFormImagePreview').src=menuFormImageUrl_||createPlaceholderMenuImage_();
+      modal.classList.add('show');
+    }
+
+    function closeMenuForm(){const modal=document.getElementById('menuFormBackdrop');if(modal)modal.classList.remove('show');}
+    function menuFormBackdropClick(event){if(event.target&&event.target.id==='menuFormBackdrop')closeMenuForm();}
+    function previewMenuImage(event){const file=event.target.files&&event.target.files[0];if(!file)return;if(file.size>4*1024*1024){alert('รูปใหญ่เกิน 4 MB');event.target.value='';return;}const reader=new FileReader();reader.onload=e=>document.getElementById('menuFormImagePreview').src=e.target.result;reader.readAsDataURL(file);}
+
+    async function saveMenuFromForm(event){
+      event.preventDefault();
+      const id=String(document.getElementById('menuFormId').value||'').trim();
+      const oldMenu=id?findAdminMenu_(id):null;
+      const file=document.getElementById('menuFormImageFile').files[0];
+      let imageUrl=menuFormImageUrl_||'';
+      try{
+        if(file) imageUrl=await uploadAdminImageFromFile_(file);
+        const menu={id:id,name:document.getElementById('menuFormName').value.trim(),price:Number(document.getElementById('menuFormPrice').value||0),category:document.getElementById('menuFormCategory').value.trim(),description:document.getElementById('menuFormDescription').value.trim(),image:imageUrl,available:oldMenu?!!oldMenu.available:true};
+        const action=id?'saveMenu':'createMenu';
+        const result=await postAdminAction_({action:action,menu:menu});
+        if(!result.success)throw new Error(result.error||'บันทึกเมนูไม่สำเร็จ');
+        closeMenuForm();await loadMenuSystemData_();renderMenuManager();
+      }catch(error){alert(error.message||String(error));}
+    }
+
+    async function uploadAdminImageFromFile_(file){
+      const dataUrl=await readFileAsDataUrl_(file);
+      const result=await postAdminAction_({action:'uploadAdminImage',
+                          adminToken:
+                            adminAuthToken_(),image:{dataUrl:dataUrl,fileName:file.name}});
+      if(!result.success)throw new Error(result.error||'อัปโหลดรูปไม่สำเร็จ');
+      return result.url||'';
+    }
+
+    async function postAdminAction_(payload) {
+
+      const token =
+        typeof adminAuthToken_ === 'function'
+          ? adminAuthToken_()
+          : '';
+    
+      if (!token) {
+        throw new Error(
+          'ต้องเข้าสู่ระบบ Admin ก่อน'
+        );
+      }
+    
+      const requestPayload =
+        Object.assign(
+          {},
+          payload,
+          {
+            adminToken: token
+          }
+        );
+    
+      const response =
+        await fetch(
+          API_URL,
+          {
+            method: 'POST',
+    
+            headers: {
+              'Content-Type':
+                'text/plain;charset=utf-8'
+            },
+    
+            body:
+              JSON.stringify(
+                requestPayload
+              )
+          }
+        );
+    
+      const result =
+        await response.json();
+    
+      return result;
+    }
+
+    function readFileAsDataUrl_(file){return new Promise(function(resolve,reject){const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('อ่านรูปไม่สำเร็จ'));r.readAsDataURL(file);});}
+    function createPlaceholderMenuImage_(){return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="100%" height="100%" fill="#f3f3f3"/><text x="50%" y="55%" text-anchor="middle" font-size="70">🍛</text></svg>');}
+
+    async function toggleMenuAvailability(menuId,available){
+      const menu=findAdminMenu_(menuId);if(!menu)return;
+      if(!confirm((available?'เปิดขาย ':'ปิดขาย ')+menu.name+' ใช่หรือไม่?'))return;
+      try{const result=await postAdminAction_({action:'toggleMenuAvailable',
+                          adminToken:
+                            adminAuthToken_(),menuId:menuId,available:available});if(!result.success)throw new Error(result.error||'เปลี่ยนสถานะไม่สำเร็จ');menu.available=available;renderMenuManager();}catch(error){alert(error.message||String(error));}
+    }
+
+
+    function renderDailyDishList(){
+      const list=document.getElementById('dailyDishList');if(!list)return;
+      const date=document.getElementById('dailyDateInput')?.value||todayYmd_();
+      const visible=adminDailyDishes_.filter(function(d){return String(d.date||'')===date;});
+      const activeCount=visible.filter(d=>d.available).length;
+      if(!visible.length){list.innerHTML=`<div class="menu-empty">วันนี้ยังไม่มีรายการกับข้าว<br>กด “➕ เพิ่มกับข้าว” เพื่อเริ่มเพิ่ม</div>`;return;}
+      list.innerHTML=`<div class="daily-summary">วันที่ ${escapeHtml(date)} • มี ${activeCount} รายการที่เปิดขาย</div>`+visible.map(function(d){return `<div class="daily-item-card">
+        ${d.image?`<img class="daily-item-image" src="${escapeHtml(d.image)}" alt="${escapeHtml(d.name)}">`:`<div class="daily-item-image" style="display:flex;align-items:center;justify-content:center;font-size:25px">🍲</div>`}
+        <div><div class="menu-item-name">${escapeHtml(d.name)}</div><div class="menu-item-meta">${escapeHtml(d.description||'')}</div><div class="menu-item-status ${d.available?'on':'off'}">${d.available?'🟢 ใช้ขายวันนี้':'🔴 ปิด'}</div></div>
+        <div class="menu-item-actions"><button class="menu-action-btn menu-action-edit" onclick="openDailyDishForm('${escapeJs(d.id)}')">✏️</button>${d.available?`<button class="menu-action-btn menu-action-off" onclick="toggleDailyDishUI('${escapeJs(d.id)}',false)">🔴 ปิด</button>`:`<button class="menu-action-btn menu-action-on" onclick="toggleDailyDishUI('${escapeJs(d.id)}',true)">🟢 เปิด</button>`}</div>
+      </div>`;}).join('');
+    }
+
+    async function loadDailyDishesForDate(){
+      try{await loadMenuSystemData_();renderDailyDishList();}catch(error){alert(error.message||String(error));}
+    }
+
+    function openDailyDishForm(id){
+      const d=id?adminDailyDishes_.find(x=>String(x.id)===String(id)):null;
+      const modal=document.getElementById('dailyDishFormBackdrop');if(!modal)return;
+      document.getElementById('dailyDishFormTitle').textContent=d?'✏️ แก้ไขกับข้าว':'➕ เพิ่มกับข้าว';
+      document.getElementById('dailyDishFormId').value=d?d.id:'';
+      document.getElementById('dailyDishFormDate').value=d?d.date:(document.getElementById('dailyDateInput')?.value||todayYmd_());
+      document.getElementById('dailyDishFormName').value=d?d.name:'';
+      document.getElementById('dailyDishFormDescription').value=d?d.description||'':'';
+      dailyDishImageUrl_=d?d.image||'':'';
+      document.getElementById('dailyDishFormImageFile').value='';
+      document.getElementById('dailyDishFormImagePreview').src=dailyDishImageUrl_||createPlaceholderMenuImage_();
+      modal.classList.add('show');
+    }
+    function closeDailyDishForm(){const m=document.getElementById('dailyDishFormBackdrop');if(m)m.classList.remove('show');}
+    function dailyDishFormBackdropClick(event){if(event.target&&event.target.id==='dailyDishFormBackdrop')closeDailyDishForm();}
+    function previewDailyDishImage(event){const file=event.target.files&&event.target.files[0];if(!file)return;const r=new FileReader();r.onload=e=>document.getElementById('dailyDishFormImagePreview').src=e.target.result;r.readAsDataURL(file);}
+    async function saveDailyDishFromForm(event){
+      event.preventDefault();
+      try{
+        const id=document.getElementById('dailyDishFormId').value.trim();
+        const old=id?adminDailyDishes_.find(x=>String(x.id)===String(id)):null;
+        const file=document.getElementById('dailyDishFormImageFile').files[0];
+        let imageUrl=dailyDishImageUrl_||''; if(file) imageUrl=await uploadAdminImageFromFile_(file);
+        const dish={id:id,date:document.getElementById('dailyDishFormDate').value,name:document.getElementById('dailyDishFormName').value.trim(),description:document.getElementById('dailyDishFormDescription').value.trim(),image:imageUrl,available:old?!!old.available:true};
+        const action=id?'saveDailyDish':'createDailyDish';
+        const result = await postAdminAction_({
+          action: action,
+          adminToken: adminAuthToken_(),
+          dish: dish
+        });if(!result.success)throw new Error(result.error||'บันทึกกับข้าวไม่สำเร็จ');
+        closeDailyDishForm();await loadMenuSystemData_();document.getElementById('dailyDateInput').value=dish.date;renderDailyDishList();
+      }catch(error){alert(error.message||String(error));}
+    }
+    async function toggleDailyDishUI(id, available) {
+
+  try {
+
+    const token =
+      adminAuthToken_();
+
+    if (!token) {
+      throw new Error(
+        'Admin Session หมดอายุ กรุณาเข้าสู่ระบบใหม่'
+      );
+    }
+
+    const result =
+      await postAdminAction_({
+        action: 'toggleDailyDish',
+        adminToken: token,
+        dishId: id,
+        available: available
+      });
+
+    if (!result.success) {
+      throw new Error(
+        result.error ||
+        'เปลี่ยนสถานะเมนูไม่สำเร็จ'
+      );
+    }
+
+    await loadMenuSystemData_();
+
+    renderDailyDishList();
+
+  } catch (error) {
+
+    alert(
+      error.message ||
+      String(error)
+    );
+
+  }
+
+}
+
+
+    function renderSpecialMenuList(){
+      const list=document.getElementById('specialMenuList');if(!list)return;
+      if(!adminSpecialMenus_.length){list.innerHTML='<div class="menu-empty">ยังไม่มีเมนูพิเศษ</div>';return;}
+      list.innerHTML=adminSpecialMenus_.map(function(m){return `<div class="special-item-card">
+        ${m.image?`<img class="special-item-image" src="${escapeHtml(m.image)}" alt="${escapeHtml(m.name)}">`:`<div class="special-item-image" style="display:flex;align-items:center;justify-content:center;font-size:25px">⭐</div>`}
+        <div><div class="menu-item-name">${escapeHtml(m.name)}</div><div class="menu-item-meta">${Number(m.price||0).toLocaleString('th-TH')} บาท • ${escapeHtml(m.startDate)} ถึง ${escapeHtml(m.endDate)}</div><div class="menu-item-status ${m.available?'on':'off'}">${m.available?'🟢 เปิด':'🔴 ปิด'}</div></div>
+        <div class="menu-item-actions"><button class="menu-action-btn menu-action-edit" onclick="openSpecialMenuForm('${escapeJs(m.id)}')">✏️</button>${m.available?`<button class="menu-action-btn menu-action-off" onclick="toggleSpecialMenuUI('${escapeJs(m.id)}',false)">🔴 ปิด</button>`:`<button class="menu-action-btn menu-action-on" onclick="toggleSpecialMenuUI('${escapeJs(m.id)}',true)">🟢 เปิด</button>`}</div>
+      </div>`;}).join('');
+    }
+
+    function openSpecialMenuForm(id){
+      const m=id?adminSpecialMenus_.find(x=>String(x.id)===String(id)):null;
+      const modal=document.getElementById('specialMenuFormBackdrop');if(!modal)return;
+      document.getElementById('specialMenuFormTitle').textContent=m?'✏️ แก้ไขเมนูพิเศษ':'⭐ เพิ่มเมนูพิเศษ';
+      document.getElementById('specialMenuFormId').value=m?m.id:'';
+      document.getElementById('specialMenuFormStart').value=m?m.startDate:todayYmd_();
+      document.getElementById('specialMenuFormEnd').value=m?m.endDate:todayYmd_();
+      document.getElementById('specialMenuFormName').value=m?m.name:'';
+      document.getElementById('specialMenuFormPrice').value=m?m.price:'';
+      document.getElementById('specialMenuFormDescription').value=m?m.description||'':'';
+      specialMenuImageUrl_=m?m.image||'':'';
+      document.getElementById('specialMenuFormImageFile').value='';
+      document.getElementById('specialMenuFormImagePreview').src=specialMenuImageUrl_||createPlaceholderMenuImage_();
+      modal.classList.add('show');
+    }
+    function closeSpecialMenuForm(){const m=document.getElementById('specialMenuFormBackdrop');if(m)m.classList.remove('show');}
+    function specialMenuFormBackdropClick(event){if(event.target&&event.target.id==='specialMenuFormBackdrop')closeSpecialMenuForm();}
+    function previewSpecialMenuImage(event){const file=event.target.files&&event.target.files[0];if(!file)return;const r=new FileReader();r.onload=e=>document.getElementById('specialMenuFormImagePreview').src=e.target.result;r.readAsDataURL(file);}
+    async function saveSpecialMenuFromForm(event){
+      event.preventDefault();
+      try{
+        const id=document.getElementById('specialMenuFormId').value.trim();
+        const old=id?adminSpecialMenus_.find(x=>String(x.id)===String(id)):null;
+        const file=document.getElementById('specialMenuFormImageFile').files[0];
+        let imageUrl=specialMenuImageUrl_||'';if(file)imageUrl=await uploadAdminImageFromFile_(file);
+        const menu={id:id,startDate:document.getElementById('specialMenuFormStart').value,endDate:document.getElementById('specialMenuFormEnd').value,name:document.getElementById('specialMenuFormName').value.trim(),price:Number(document.getElementById('specialMenuFormPrice').value||0),description:document.getElementById('specialMenuFormDescription').value.trim(),image:imageUrl,available:old?!!old.available:true};
+        const action=id?'saveSpecialMenu':'createSpecialMenu';
+        const result=await postAdminAction_({action:action,menu:menu});if(!result.success)throw new Error(result.error||'บันทึกเมนูพิเศษไม่สำเร็จ');
+        closeSpecialMenuForm();await loadMenuSystemData_();renderSpecialMenuList();
+      }catch(error){alert(error.message||String(error));}
+    }
+    async function toggleSpecialMenuUI(id,available){try{const result=await postAdminAction_({action:'toggleSpecialMenu',
+                          adminToken:
+                            adminAuthToken_(),menuId:id,available:available});if(!result.success)throw new Error(result.error||'เปลี่ยนสถานะไม่สำเร็จ');await loadMenuSystemData_();renderSpecialMenuList();}catch(error){alert(error.message||String(error));}}
+
+    /* =====================================
+     * SETTINGS / SOUND / WAKE LOCK
+     * ===================================== */
+
+
+    /* =====================================
+     * SETTINGS / MENU / PAYMENT / WAKE
+     * ===================================== */
+
+    let adminSettingsData_ = null;
+    let menuEditorImageDataUrl_ = '';
+    let soundNotificationsEnabled =
+      localStorage.getItem(
+        'adminSoundNotifications'
+      ) !== 'false';
+
+    let wakeSettingEnabled =
+      localStorage.getItem(
+        'adminKeepScreenAwake'
+      ) === 'true';
+
+    let wakeLockSentinel = null;
+
+
+    async function openSettings() {
+
+      const modal =
+        document.getElementById(
+          'settingsBackdrop'
+        );
+
+      if (modal) {
+        modal.classList.add('show');
+      }
+
+      await loadAdminSettings_();
+
+    }
+
+
+    function closeSettings() {
+
+      const modal =
+        document.getElementById(
+          'settingsBackdrop'
+        );
+
+      if (modal) {
+        modal.classList.remove('show');
+      }
+
+    }
+
+
+    function settingsBackdropClick(event) {
+
+      if (
+        event.target &&
+        event.target.id ===
+        'settingsBackdrop'
+      ) {
+        closeSettings();
+      }
+
+    }
+
+
+    async function apiPost_(payload) {
+
+      const token =
+        typeof adminAuthToken_ === 'function'
+          ? adminAuthToken_()
+          : '';
+    
+      if (!token) {
+        throw new Error(
+          'ต้องเข้าสู่ระบบ Admin ก่อน'
+        );
+      }
+    
+      const requestPayload =
+        Object.assign(
+          {},
+          payload,
+          {
+            adminToken: token
+          }
+        );
+    
+      const response =
+        await fetch(
+          API_URL,
+          {
+            method: 'POST',
+    
+            headers: {
+              'Content-Type':
+                'text/plain;charset=utf-8'
+            },
+    
+            body:
+              JSON.stringify(
+                requestPayload
+              )
+          }
+        );
+    
+      const result =
+        await response.json();
+    
+      if (!result.success) {
+    
+        throw new Error(
+          result.error ||
+          'บันทึกไม่สำเร็จ'
+        );
+    
+      }
+    
+      return result;
+    }
+
+
+    async function loadAdminSettings_() {
+
+      const list =
+        document.getElementById(
+          'adminMenuList'
+        );
+
+      if (list) {
+
+        list.innerHTML =
+          '<div class="settings-note">กำลังโหลดเมนู...</div>';
+
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL +
+            '?action=getAdminSettings&adminToken=' +
+            encodeURIComponent(
+              adminAuthToken_()
+            )
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          !result.success
+        ) {
+
+          throw new Error(
+            result.error ||
+            'โหลดการตั้งค่าไม่สำเร็จ'
+          );
+
+        }
+
+        adminSettingsData_ =
+          result;
+
+        renderAdminMenus_();
+
+        fillPaymentSettings_();
+
+      } catch (error) {
+
+        console.error(
+          'ADMIN SETTINGS ERROR:',
+          error
+        );
+
+        if (list) {
+
+          list.innerHTML =
+            '<div class="settings-note" style="color:#b00020">' +
+            escapeHtml(
+              error.message ||
+              String(error)
+            ) +
+            '</div>';
+
+        }
+
+        alert(
+          error.message ||
+          String(error)
+        );
+
+      }
+
+    }
+
+
+    function renderAdminMenus_() {
+
+      const list =
+        document.getElementById(
+          'adminMenuList'
+        );
+
+      if (!list) return;
+
+      const menus =
+        adminSettingsData_ &&
+        Array.isArray(
+          adminSettingsData_.menus
+        )
+          ? adminSettingsData_.menus
+          : [];
+
+      if (!menus.length) {
+
+        list.innerHTML =
+          '<div class="settings-note">ยังไม่มีเมนู</div>';
+
+        return;
+
+      }
+
+      list.innerHTML =
+        menus.map(
+          function(menu) {
+
+            const image =
+              menu.image ||
+              '';
+
+            const thumb =
+              image
+                ? '<img class="admin-menu-thumb" src="' +
+                  escapeHtml(
+                    image
+                  ) +
+                  '" alt="">'
+                : '<div class="admin-menu-thumb"></div>';
+
+            return `
+              <div class="admin-menu-item">
+
+                ${thumb}
+
+                <div>
+
+                  <div class="admin-menu-name">
+                    ${escapeHtml(
+                      menu.name
+                    )}
+                  </div>
+
+                  <div class="admin-menu-meta">
+                    ${Number(
+                      menu.price || 0
+                    )} บาท
+                    ${menu.category
+                      ? ' · ' +
+                        escapeHtml(
+                          menu.category
+                        )
+                      : ''}
+                  </div>
+
+                  <div class="admin-menu-status ${
+                    menu.available
+                      ? 'available'
+                      : 'soldout'
+                  }">
+                    ${
+                      menu.available
+                        ? '🟢 กำลังขาย'
+                        : '🔴 ปิดขาย / ของหมด'
+                    }
+                  </div>
+
+                </div>
+
+                <div class="admin-menu-actions">
+
+                  <button
+                    class="settings-action"
+                    onclick="editMenu('${escapeJs(menu.id)}')"
+                  >
+                    ✏️ แก้ไข
+                  </button>
+
+                  <button
+                    class="settings-action ${
+                      menu.available
+                        ? ''
+                        : 'blue'
+                    }"
+                    onclick="toggleMenuAvailable_(
+                      '${escapeJs(menu.id)}',
+                      ${menu.available ? 'false' : 'true'}
+                    )"
+                  >
+                    ${
+                      menu.available
+                        ? '🔴 ปิดขาย'
+                        : '🟢 เปิดขาย'
+                    }
+                  </button>
+
+                </div>
+
+              </div>
+            `;
+
+          }
+        )
+        .join('');
+
+    }
+
+
+    function openAddMenuForm() {
+
+      const editor =
+        document.getElementById(
+          'menuEditor'
+        );
+
+      document.getElementById(
+        'menuEditorTitle'
+      ).textContent =
+        'เพิ่มเมนู';
+
+      document.getElementById(
+        'menuEditorId'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorName'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorPrice'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorCategory'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorDescription'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorImageFile'
+      ).value = '';
+
+      document.getElementById(
+        'menuEditorImagePreview'
+      ).style.display =
+        'none';
+
+      menuEditorImageDataUrl_ =
+        '';
+
+      editor.style.display =
+        'block';
+
+      editor.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+
+    }
+
+
+    function editMenu(
+      menuId
+    ) {
+
+      const menus =
+        adminSettingsData_ &&
+        adminSettingsData_.menus
+          ? adminSettingsData_.menus
+          : [];
+
+      const menu =
+        menus.find(
+          function(item) {
+            return String(
+              item.id
+            ) ===
+            String(
+              menuId
+            );
+          }
+        );
+
+      if (!menu) {
+        alert('ไม่พบเมนู');
+        return;
+      }
+
+      document.getElementById(
+        'menuEditorTitle'
+      ).textContent =
+        'แก้ไข ' +
+        menu.name;
+
+      document.getElementById(
+        'menuEditorId'
+      ).value =
+        menu.id;
+
+      document.getElementById(
+        'menuEditorName'
+      ).value =
+        menu.name || '';
+
+      document.getElementById(
+        'menuEditorPrice'
+      ).value =
+        menu.price || 0;
+
+      document.getElementById(
+        'menuEditorCategory'
+      ).value =
+        menu.category || '';
+
+      document.getElementById(
+        'menuEditorDescription'
+      ).value =
+        menu.description || '';
+
+      document.getElementById(
+        'menuEditorImageFile'
+      ).value =
+        '';
+
+      menuEditorImageDataUrl_ =
+        '';
+
+      const preview =
+        document.getElementById(
+          'menuEditorImagePreview'
+        );
+
+      if (menu.image) {
+
+        preview.src =
+          menu.image;
+
+        preview.style.display =
+          'block';
+
+      } else {
+
+        preview.style.display =
+          'none';
+
+      }
+
+      document.getElementById(
+        'menuEditor'
+      ).style.display =
+        'block';
+
+    }
+
+
+    function closeMenuEditor() {
+
+      document.getElementById(
+        'menuEditor'
+      ).style.display =
+        'none';
+
+      menuEditorImageDataUrl_ =
+        '';
+
+    }
+
+
+    function resizeImageFile_(
+      file
+    ) {
+
+      return new Promise(
+        function(resolve, reject) {
+
+          const reader =
+            new FileReader();
+
+          reader.onload =
+            function() {
+
+              const img =
+                new Image();
+
+              img.onload =
+                function() {
+
+                  const max =
+                    1000;
+
+                  const scale =
+                    Math.min(
+                      1,
+                      max /
+                      Math.max(
+                        img.width,
+                        img.height
+                      )
+                    );
+
+                  const canvas =
+                    document.createElement(
+                      'canvas'
+                    );
+
+                  canvas.width =
+                    Math.max(
+                      1,
+                      Math.round(
+                        img.width *
+                        scale
+                      )
+                    );
+
+                  canvas.height =
+                    Math.max(
+                      1,
+                      Math.round(
+                        img.height *
+                        scale
+                      )
+                    );
+
+                  const ctx =
+                    canvas.getContext(
+                      '2d'
+                    );
+
+                  ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                  );
+
+                  resolve(
+                    canvas.toDataURL(
+                      'image/jpeg',
+                      0.82
+                    )
+                  );
+
+                };
+
+              img.onerror =
+                reject;
+
+              img.src =
+                reader.result;
+
+            };
+
+          reader.onerror =
+            reject;
+
+          reader.readAsDataURL(
+            file
+          );
+
+        }
+      );
+
+    }
+
+    async function uploadAdminImage_(
+      dataUrl,
+      fileName
+    ) {
+
+      const result =
+        await apiPost_({
+          action:
+            'uploadAdminImage',
+                    adminToken:
+                      adminAuthToken_(),
+
+          image: {
+            dataUrl:
+              dataUrl,
+
+            fileName:
+              fileName
+          }
+
+        });
+
+      return result.url;
+
+    }
+
+
+    async function saveMenuFromEditor() {
+
+      const id =
+        document.getElementById(
+          'menuEditorId'
+        ).value.trim();
+
+      const name =
+        document.getElementById(
+          'menuEditorName'
+        ).value.trim();
+
+      const price =
+        Number(
+          document.getElementById(
+            'menuEditorPrice'
+          ).value
+        );
+
+      const category =
+        document.getElementById(
+          'menuEditorCategory'
+        ).value.trim();
+
+      const description =
+        document.getElementById(
+          'menuEditorDescription'
+        ).value.trim();
+
+      if (!name) {
+        alert('กรุณาใส่ชื่อเมนู');
+        return;
+      }
+
+      if (
+        !isFinite(price) ||
+        price < 0
+      ) {
+        alert('กรุณาใส่ราคาให้ถูกต้อง');
+        return;
+      }
+
+      try {
+
+        let imageUrl = '';
+
+        if (id) {
+
+          const old =
+            adminSettingsData_.menus.find(
+              function(menu) {
+                return String(menu.id) ===
+                  String(id);
+              }
+            );
+
+          imageUrl =
+            old &&
+            old.image
+              ? old.image
+              : '';
+
+        }
+
+        if (menuEditorImageDataUrl_) {
+
+          imageUrl =
+            await uploadAdminImage_(
+              menuEditorImageDataUrl_,
+              name + '.jpg'
+            );
+
+        }
+
+        if (id) {
+
+          await apiPost_({
+            action:
+              'saveMenu',
+                          adminToken:
+                            adminAuthToken_(),menu: {
+
+              id: id,
+              name: name,
+              price: price,
+              category: category,
+              description:
+                description,
+              image: imageUrl,
+              available:
+                (
+                  adminSettingsData_.menus.find(
+                    function(menu) {
+                      return String(menu.id) ===
+                        String(id);
+                    }
+                  ) || {}
+                ).available !== false
+            }
+
+          });
+
+        } else {
+
+          await apiPost_({
+            action:
+              'createMenu',
+                          adminToken:
+                            adminAuthToken_(),menu: {
+
+              name: name,
+              price: price,
+              category: category,
+              description:
+                description,
+              image: imageUrl
+
+            }
+
+          });
+
+        }
+
+        closeMenuEditor();
+
+        await loadAdminSettings_();
+
+        alert(
+          'บันทึกเมนูสำเร็จ'
+        );
+
+      } catch (error) {
+
+        console.error(
+          'SAVE MENU ERROR:',
+          error
+        );
+
+        alert(
+          error.message ||
+          String(error)
+        );
+
+      }
+
+    }
+
+
+    async function toggleMenuAvailable_(
+      menuId,
+      available
+    ) {
+
+      const menu =
+        adminSettingsData_.menus.find(
+          function(item) {
+            return String(item.id) ===
+              String(menuId);
+          }
+        );
+
+      if (!menu) {
+        return;
+      }
+
+      const actionText =
+        available
+          ? 'เปิดขาย'
+          : 'ปิดขาย / ของหมด';
+
+      if (
+        !confirm(
+          actionText +
+          ' "' +
+          menu.name +
+          '" ?'
+        )
+      ) {
+        return;
+      }
+
+      try {
+
+        await apiPost_({
+          action:
+            'toggleMenuAvailable',
+                    adminToken:
+                      adminAuthToken_(),
+
+          menuId:
+            menuId,
+
+          available:
+            available
+
+        });
+
+        await loadAdminSettings_();
+
+      } catch (error) {
+
+        alert(
+          error.message ||
+          String(error)
+        );
+
+      }
+
+    }
+
+
+    function fillPaymentSettings_() {
+
+      const p =
+        adminSettingsData_ &&
+        adminSettingsData_.payment
+          ? adminSettingsData_.payment
+          : {};
+
+      setPaymentButton_(
+        'cashSettingBtn',
+        !!p.cashActive
+      );
+
+      setPaymentButton_(
+        'promptpaySettingBtn',
+        !!p.promptPayActive
+      );
+
+      setPaymentButton_(
+        'governmentSettingBtn',
+        !!p.governmentActive
+      );
+
+      document.getElementById(
+        'promptpayNameSetting'
+      ).value =
+        p.promptPayName || '';
+
+      document.getElementById(
+        'promptpayNumberSetting'
+      ).value =
+        p.promptPayNumber || '';
+
+      document.getElementById(
+        'promptpayQrUrlSetting'
+      ).value =
+        p.promptPayQrUrl || '';
+
+      const qr =
+        document.getElementById(
+          'settingsQrPreview'
+        );
+
+      if (
+        p.promptPayQrData
+      ) {
+
+        qr.src =
+          p.promptPayQrData;
+
+        qr.style.display =
+          'block';
+
+      } else {
+
+        qr.style.display =
+          'none';
+
+      }
+
+      document.getElementById(
+        'qrImageFile'
+      ).value =
+        '';
+
+    }
+
+
+    function setPaymentButton_(
+      id,
+      on
+    ) {
+
+      const btn =
+        document.getElementById(
+          id
+        );
+
+      if (!btn) return;
+
+      btn.className =
+        'settings-toggle ' +
+        (
+          on
+            ? 'on'
+            : 'off'
+        );
+
+      btn.textContent =
+        on
+          ? '🟢 เปิด'
+          : '🔴 ปิด';
+
+      btn.dataset.on =
+        on
+          ? 'true'
+          : 'false';
+
+    }
+
+
+    function togglePaymentSettingLocal(
+      key
+    ) {
+
+      if (
+        !adminSettingsData_
+      ) {
+        return;
+      }
+
+      const map = {
+
+        cashActive:
+          'cashSettingBtn',
+
+        promptPayActive:
+          'promptpaySettingBtn',
+
+        governmentActive:
+          'governmentSettingBtn'
+
+      };
+
+      const btn =
+        document.getElementById(
+          map[key]
+        );
+
+      const current =
+        btn &&
+        btn.dataset.on ===
+        'true';
+
+      adminSettingsData_.payment[key] =
+        !current;
+
+      setPaymentButton_(
+        map[key],
+        !current
+      );
+
+    }
+
+
+    async function savePaymentSettingsFromUI() {
+
+      if (
+        !adminSettingsData_
+      ) {
+        return;
+      }
+
+      try {
+
+        let qrUrl =
+          document.getElementById(
+            'promptpayQrUrlSetting'
+          ).value.trim();
+
+        const qrFile =
+          document.getElementById(
+            'qrImageFile'
+          ).files &&
+          document.getElementById(
+            'qrImageFile'
+          ).files[0];
+
+        if (qrFile) {
+
+          const dataUrl =
+            await resizeImageFile_(
+              qrFile
+            );
+
+          qrUrl =
+            await uploadAdminImage_(
+              dataUrl,
+              'PromptPay_QR.jpg'
+            );
+
+        }
+
+        const settings = {
+
+          cashActive:
+            document.getElementById(
+              'cashSettingBtn'
+            ).dataset.on ===
+            'true',
+
+          promptPayActive:
+            document.getElementById(
+              'promptpaySettingBtn'
+            ).dataset.on ===
+            'true',
+
+          promptPayName:
+            document.getElementById(
+              'promptpayNameSetting'
+            ).value.trim(),
+
+          promptPayNumber:
+            document.getElementById(
+              'promptpayNumberSetting'
+            ).value.trim(),
+
+          promptPayQrUrl:
+            qrUrl,
+
+          governmentActive:
+            document.getElementById(
+              'governmentSettingBtn'
+            ).dataset.on ===
+            'true',
+
+          governmentName:
+            adminSettingsData_.payment
+              .governmentName ||
+            '',
+
+          governmentNote:
+            adminSettingsData_.payment
+              .governmentNote ||
+            ''
+
+        };
+
+
+        await apiPost_({
+
+          action:
+            'savePaymentSettings',
+                          adminToken:
+                            adminAuthToken_(),settings:
+            settings
+
+        });
+
+
+        await loadAdminSettings_();
+
+        alert(
+          'บันทึกการชำระเงินสำเร็จ'
+        );
+
+      } catch (error) {
+
+        console.error(
+          'SAVE PAYMENT SETTINGS ERROR:',
+          error
+        );
+
+        alert(
+          error.message ||
+          String(error)
+        );
+
+      }
+
+    }
+
+
+
+    function speakNewOrder_(orderId) {
+
+      if (!soundNotificationsEnabled) {
+        return;
+      }
+
+      if (
+        !('speechSynthesis' in window)
+      ) {
+
+        console.warn(
+          'Browser นี้ไม่รองรับ SpeechSynthesis'
+        );
+
+        return;
+
+      }
+
+      try {
+
+        const synth =
+          window.speechSynthesis;
+
+        synth.cancel();
+
+        const utterance =
+          new SpeechSynthesisUtterance(
+            'มีออเดอร์ใหม่ครับ เลขที่ ' +
+            String(
+              orderId || 'ใหม่'
+            )
+          );
+
+        utterance.lang = 'th-TH';
+        utterance.rate = 0.92;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        const voices =
+          synth.getVoices();
+
+        const thaiVoice =
+          voices.find(
+            function(voice) {
+
+              return String(
+                voice.lang || ''
+              )
+              .toLowerCase()
+              .startsWith('th');
+
+            }
+          );
+
+        if (thaiVoice) {
+          utterance.voice =
+            thaiVoice;
+        }
+
+        synth.speak(
+          utterance
+        );
+
+      } catch (error) {
+
+        console.warn(
+          'Speech notification error:',
+          error
+        );
+
+      }
+
+    }
+
+
+    function testConfiguredSound() {
+
+      soundNotificationsEnabled =
+        true;
+
+      localStorage.setItem(
+        'adminSoundNotifications',
+        'true'
+      );
+
+      updateSettingsButtons_();
+
+      speakNewOrder_(
+        'A001'
+      );
+
+    }
+
+
+    function updateSettingsButtons_() {
+
+      const soundBtn =
+        document.getElementById(
+          'soundSettingBtn'
+        );
+
+      if (soundBtn) {
+
+        soundBtn.className =
+          'settings-toggle ' +
+          (
+            soundNotificationsEnabled
+              ? 'on'
+              : 'off'
+          );
+
+        soundBtn.textContent =
+          soundNotificationsEnabled
+            ? '🔊 เปิด'
+            : '🔇 ปิด';
+
+      }
+
+      const wakeBtn =
+        document.getElementById(
+          'wakeSettingBtn'
+        );
+
+      if (wakeBtn) {
+
+        wakeBtn.className =
+          'settings-toggle ' +
+          (
+            wakeSettingEnabled
+              ? 'on'
+              : 'off'
+          );
+
+        wakeBtn.textContent =
+          wakeSettingEnabled
+            ? '🔆 เปิด'
+            : '🌙 ปิด';
+
+      }
+
+    }
+
+
+    function toggleSoundSetting() {
+
+      soundNotificationsEnabled =
+        !soundNotificationsEnabled;
+
+      localStorage.setItem(
+        'adminSoundNotifications',
+        String(
+          soundNotificationsEnabled
+        )
+      );
+
+      updateSettingsButtons_();
+
+      if (
+        soundNotificationsEnabled &&
+        typeof speakNewOrder_ ===
+        'function'
+      ) {
+
+        speakNewOrder_(
+          'ทดสอบระบบ'
+        );
+
+      }
+
+    }
+
+
+    async function requestWakeLock_() {
+
+      if (
+        !('wakeLock' in navigator)
+      ) {
+
+        alert(
+          'อุปกรณ์หรือ Browser นี้ไม่รองรับการเปิดหน้าจอตลอด'
+        );
+
+        return false;
+
+      }
+
+      try {
+
+        wakeLockSentinel =
+          await navigator.wakeLock.request(
+            'screen'
+          );
+
+        wakeLockSentinel.addEventListener(
+          'release',
+          function() {
+
+            wakeLockSentinel =
+              null;
+
+            updateSettingsButtons_();
+
+          }
+        );
+
+        return true;
+
+      } catch (error) {
+
+        console.warn(
+          'Wake Lock ไม่สำเร็จ:',
+          error
+        );
+
+        return false;
+
+      }
+
+    }
+
+
+    async function toggleWakeSetting() {
+
+      if (wakeSettingEnabled) {
+
+        wakeSettingEnabled =
+          false;
+
+        localStorage.setItem(
+          'adminKeepScreenAwake',
+          'false'
+        );
+
+        if (wakeLockSentinel) {
+
+          try {
+            await wakeLockSentinel.release();
+          } catch (error) {}
+
+        }
+
+        wakeLockSentinel =
+          null;
+
+      } else {
+
+        const success =
+          await requestWakeLock_();
+
+        if (!success) {
+          return;
+        }
+
+        wakeSettingEnabled =
+          true;
+
+        localStorage.setItem(
+          'adminKeepScreenAwake',
+          'true'
+        );
+
+      }
+
+      updateSettingsButtons_();
+
+    }
+
+
+    document.addEventListener(
+      'visibilitychange',
+      function() {
+
+        if (
+          document.visibilityState ===
+          'visible' &&
+          wakeSettingEnabled &&
+          !wakeLockSentinel
+        ) {
+
+          requestWakeLock_();
+
+        }
+
+      }
+    );
+
+
+    function initSettings_() {
+
+      updateSettingsButtons_();
+
+      if (wakeSettingEnabled) {
+        requestWakeLock_();
+      }
+
+    }
+
+
+
+    let isLoadingOrders = false;
+
+
+    /* =====================================
+     * LOCAL NEW ORDER NOTIFICATION
+     * ตรวจทุกครั้งที่ Admin refresh ออเดอร์
+     * ===================================== */
+
+    let knownOrderIds =
+      new Set();
+
+    let notificationInitialized =
+      false;
+
+    let newOrderAudioContext =
+      null;
+
+    let newOrderAlertTimer =
+      null;
+
+    let lastRenderedOrdersSnapshot =
+      '';
+
+
+    function ensureNewOrderAudio_() {
+
+      try {
+
+        if (!newOrderAudioContext) {
+
+          const AudioContextClass =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+          if (!AudioContextClass) {
+            return null;
+          }
+
+          newOrderAudioContext =
+            new AudioContextClass();
+
+        }
+
+        if (
+          newOrderAudioContext.state ===
+          'suspended'
+        ) {
+
+          newOrderAudioContext
+            .resume()
+            .catch(function() {});
+
+        }
+
+        return newOrderAudioContext;
+
+      } catch (error) {
+
+        console.warn(
+          'Audio not available:',
+          error
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+    function playNewOrderSound_(
+      order
+    ) {
+
+      if (!soundNotificationsEnabled) {
+        return;
+      }
+
+      const orderId =
+        order &&
+        (
+          order.orderId ||
+          order.Order_ID
+        )
+          ? String(
+              order.orderId ||
+              order.Order_ID
+            )
+          : 'ใหม่';
+
+      speakNewOrder_(
+        orderId
+      );
+
+    }
+
+
+
+    function showNewOrderAlert_(
+      order
+    ) {
+
+      const alert =
+        document.getElementById(
+          'newOrderAlert'
+        );
+
+      const title =
+        document.getElementById(
+          'newOrderAlertTitle'
+        );
+
+      const detail =
+        document.getElementById(
+          'newOrderAlertDetail'
+        );
+
+      if (!alert) {
+        return;
+      }
+
+      const orderId =
+        order.orderId ||
+        order.Order_ID ||
+        '-';
+
+      const customer =
+        order.customerName ||
+        order.Customer_Name ||
+        'ลูกค้า';
+
+      const total =
+        Number(
+          order.total ||
+          order.Total ||
+          0
+        );
+
+      title.textContent =
+        '🚨 มีออเดอร์ใหม่!';
+
+      detail.textContent =
+        'เลขที่ ' +
+        orderId +
+        ' • ' +
+        customer +
+        ' • ' +
+        total.toLocaleString('th-TH') +
+        ' บาท • กรุณามาดูที่หน้าร้าน';
+
+      alert.classList.add(
+        'show',
+        'urgent'
+      );
+
+      clearTimeout(
+        newOrderAlertTimer
+      );
+
+      newOrderAlertTimer =
+        setTimeout(
+          function() {
+            dismissNewOrderAlert();
+          },
+          15000
+        );
+
+    }
+
+
+    function dismissNewOrderAlert() {
+
+      const alert =
+        document.getElementById(
+          'newOrderAlert'
+        );
+
+      if (alert) {
+        alert.classList.remove(
+          'show',
+          'urgent'
+        );
+      }
+
+      clearTimeout(
+        newOrderAlertTimer
+      );
+
+    }
+
+
+    function testNewOrderSound(
+      event
+    ) {
+
+      if (event) {
+        event.stopPropagation();
+      }
+
+      soundNotificationsEnabled = true;
+
+      localStorage.setItem(
+        'adminSoundNotifications',
+        'true'
+      );
+
+      updateSettingsButtons_();
+
+      ensureNewOrderAudio_();
+
+      speakNewOrder_(
+        'A001'
+      );
+
+      showNewOrderAlert_({
+        orderId: 'A001',
+        customerName: 'ทดสอบระบบ',
+        total: 50
+      });
+
+    }
+
+
+    function detectNewOrders_(
+      orders
+    ) {
+
+      const currentIds =
+        new Set();
+
+      const newOrders =
+        [];
+
+      (orders || []).forEach(
+        function(order) {
+
+          const id =
+            String(
+              order.orderId ||
+              order.Order_ID ||
+              ''
+            ).trim();
+
+          if (!id) {
+            return;
+          }
+
+          currentIds.add(id);
+
+          if (
+            notificationInitialized &&
+            !knownOrderIds.has(id)
+          ) {
+
+            newOrders.push(
+              order
+            );
+
+          }
+
+        }
+      );
+
+      if (
+        notificationInitialized &&
+        newOrders.length > 0
+      ) {
+
+        const latestNewOrder =
+          newOrders[
+            newOrders.length - 1
+          ];
+
+        playNewOrderSound_(
+          latestNewOrder
+        );
+
+        showNewOrderAlert_(
+          latestNewOrder
+        );
+
+      }
+
+      knownOrderIds =
+        currentIds;
+
+      notificationInitialized =
+        true;
+
+    }
+
+
+async function loadOrders() {
+
+  if (isLoadingOrders) {
+    return;
+  }
+
+  isLoadingOrders = true;
+
+  try {
+
+    const refreshStatus =
+      document.getElementById(
+        'silentRefreshStatus'
+      );
+
+    if (refreshStatus) {
+      refreshStatus.classList.add('show');
+    }
+
+
+    const controller =
+      new AbortController();
+
+    const timeout =
+      setTimeout(
+        function() {
+          controller.abort();
+        },
+        10000
+      );
+
+
+    let response;
+
+    try {
+
+      response =
+        await fetch(
+          API_URL +
+          '?action=getOrders&adminToken=' +
+          encodeURIComponent(
+            adminAuthToken_()
+          ),
+          {
+            method: 'GET',
+            cache: 'no-store',
+            signal: controller.signal
+          }
+        );
+
+    } finally {
+
+      clearTimeout(timeout);
+
+    }
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'Backend HTTP Error: ' +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      'ORDERS:',
+      data
+    );
+
+
+    if (!data.success) {
+
+      throw new Error(
+        data.error ||
+        'ไม่สามารถโหลดออเดอร์ได้'
+      );
+
+    }
+
+
+    orders =
+      data.orders || [];
+
+    detectNewOrders_(
+      orders
+    );
+
+
+    document
+      .getElementById('today')
+      .textContent =
+        'วันที่ ' +
+        data.date;
+
+
+    /*
+     * รีเฟรชแบบเงียบ:
+     * ถ้าข้อมูลออเดอร์ไม่เปลี่ยน จะไม่ render ใหม่
+     * เพื่อไม่ให้หน้าจอกระพริบหรือเลื่อนกลับด้านบน
+     */
+    const snapshot =
+      JSON.stringify(
+        orders.map(
+          function(order) {
+            return {
+              orderId:
+                order.orderId,
+              status:
+                order.status,
+              paymentStatus:
+                order.paymentStatus,
+              total:
+                order.total,
+              items:
+                order.items,
+              customerName:
+                order.customerName,
+              pickupTime:
+                order.pickupTime,
+              pickupSlot:
+                order.pickupSlot
+            };
+          }
+        )
+      );
+
+    if (
+      snapshot !==
+      lastRenderedOrdersSnapshot
+    ) {
+
+      const currentScrollY =
+        window.scrollY;
+
+      renderSummary();
+
+      renderOrders();
+
+      lastRenderedOrdersSnapshot =
+        snapshot;
+
+      /*
+       * ให้ Browser คงตำแหน่งที่พนักงานกำลังดูอยู่
+       * โดยเฉพาะระหว่าง auto refresh
+       */
+      requestAnimationFrame(
+        function() {
+          window.scrollTo(
+            0,
+            currentScrollY
+          );
+        }
+      );
+
+    }
+
+
+    document
+      .getElementById('lastUpdated')
+      .textContent =
+        'อัปเดตล่าสุด ' +
+        new Date()
+          .toLocaleTimeString(
+            'th-TH',
+            {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            }
+          );
+
+
+  
+    const refreshStatusDone =
+      document.getElementById(
+        'silentRefreshStatus'
+      );
+
+    if (refreshStatusDone) {
+      refreshStatusDone.classList.remove('show');
+    }
+
+} catch (error) {
+
+    console.error(
+      'LOAD ORDERS ERROR:',
+      error
+    );
+
+
+    const refreshStatusError =
+      document.getElementById(
+        'silentRefreshStatus'
+      );
+
+    if (refreshStatusError) {
+      refreshStatusError.classList.remove('show');
+    }
+
+    /*
+     * Auto-refresh ห้ามล้างรายการออเดอร์เดิม
+     * ถ้า Backend สะดุดชั่วคราว ให้คงหน้าจอเดิมไว้
+     * และรอบถัดไปจะลองโหลดใหม่เอง
+     */
+    console.warn(
+      'Auto refresh failed; keeping current orders visible:',
+      error
+    );
+
+
+  } finally {
+
+    isLoadingOrders = false;
+
+  }
+
+}
+
+
+// โหลดครั้งแรก
+    initSettings_();
+
+loadOrders();
+
+
+// Auto refresh ทุก 10 วินาที
+setInterval(
+  loadOrders,
+  10000
+);
+
+  </script>
+
+  <div
+  id="dailyDishLibraryModal"
+  class="daily-dish-modal"
+  style="display:none;"
+>
+
+  <div class="daily-dish-modal-box">
+
+    <div class="daily-dish-modal-header">
+
+      <div>
+        <h2>📚 เพิ่มจากคลังเมนู</h2>
+
+        <div class="daily-dish-date">
+          วันที่
+          <input
+            type="date"
+            id="dailyDishLibraryDate"
+          >
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onclick="closeDailyDishLibrary()"
+        class="daily-dish-close"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="daily-dish-library-actions">
+
+      <button
+        type="button"
+        onclick="selectAllDailyDishLibrary(true)"
+      >
+        ☑ เลือกทั้งหมด
+      </button>
+
+      <button
+        type="button"
+        onclick="selectAllDailyDishLibrary(false)"
+      >
+        ☐ ยกเลิกทั้งหมด
+      </button>
+
+    </div>
+
+
+    <div
+      id="dailyDishLibraryList"
+      class="daily-dish-library-list"
+    >
+      กำลังโหลดคลังเมนู...
+    </div>
+
+
+    <div class="daily-dish-modal-footer">
+
+      <span id="dailyDishLibraryCount">
+        เลือก 0 รายการ
+      </span>
+
+      <div>
+
+        <button
+          type="button"
+          onclick="closeDailyDishLibrary()"
+        >
+          ยกเลิก
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="addSelectedDailyDishes()"
+        >
+          📥 เพิ่มเมนูที่เลือก
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  window.addEventListener(
+    "load",
+    function() {
+      if (
+        typeof initializeAdminLock_ ===
+        "function"
+      ) {
+        initializeAdminLock_();
+      }
+    }
+  );
+
+  let dailyDishLibraryData = [];
+
+
+function getAdminTokenSafe_() {
+
+  // ใช้ Token ตัวเดียวกับระบบ Admin Login
+  const token =
+    typeof adminAuthToken_ === 'function'
+      ? adminAuthToken_()
+      : (
+          sessionStorage.getItem('adminAuthToken') ||
+          localStorage.getItem('adminAuthToken') ||
+          window.adminToken ||
+          sessionStorage.getItem('adminToken') ||
+          localStorage.getItem('adminToken') ||
+          ''
+        );
+
+  if (!token) {
+    throw new Error(
+      'ไม่พบ Admin Token กรุณาเข้าสู่ระบบใหม่'
+    );
+  }
+
+  return token;
+}
+
+
+function getTodayDateInput_() {
+
+  const now = new Date();
+
+  const y =
+    now.getFullYear();
+
+  const m =
+    String(
+      now.getMonth() + 1
+    ).padStart(2, '0');
+
+  const d =
+    String(
+      now.getDate()
+    ).padStart(2, '0');
+
+  return y + '-' + m + '-' + d;
+
+}
+
+
+async function openDailyDishLibrary() {
+
+  const modal =
+    document.getElementById(
+      'dailyDishLibraryModal'
+    );
+
+  const dateInput =
+    document.getElementById(
+      'dailyDishLibraryDate'
+    );
+
+  const list =
+    document.getElementById(
+      'dailyDishLibraryList'
+    );
+
+
+  modal.style.display = 'block';
+
+  dateInput.value =
+    getTodayDateInput_();
+
+  list.innerHTML =
+    'กำลังโหลดคลังเมนู...';
+
+
+  try {
+
+    const token =
+      getAdminTokenSafe_();
+
+    const url =
+      API_URL +
+      '?action=getDailyDishLibrary' +
+      '&adminToken=' +
+      encodeURIComponent(token);
+
+
+    const response =
+      await fetch(url);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'HTTP ' +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (!data.success) {
+
+      throw new Error(
+        data.error ||
+        'โหลดคลังเมนูไม่สำเร็จ'
+      );
+
+    }
+
+
+    dailyDishLibraryData =
+      data.menus || [];
+
+
+    renderDailyDishLibrary();
+
+  } catch (error) {
+
+    console.error(
+      'openDailyDishLibrary:',
+      error
+    );
+
+    list.innerHTML =
+      '<div style="color:#c00;padding:20px;">' +
+      'ไม่สามารถโหลดคลังเมนูได้<br>' +
+      String(error.message || error) +
+      '</div>';
+
+  }
+
+}
+
+
+function renderDailyDishLibrary() {
+
+  const list =
+    document.getElementById(
+      'dailyDishLibraryList'
+    );
+
+
+  if (
+    !dailyDishLibraryData.length
+  ) {
+
+    list.innerHTML =
+      '<div style="padding:20px;text-align:center;">' +
+      'ยังไม่มีเมนูในคลัง' +
+      '</div>';
+
+    updateDailyDishLibraryCount();
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    dailyDishLibraryData
+      .map(function(menu) {
+
+        return `
+          <label class="daily-dish-library-item">
+
+            <input
+              type="checkbox"
+              class="daily-dish-library-check"
+              value="${escapeHtml_(menu.libraryId)}"
+              onchange="updateDailyDishLibraryCount()"
+            >
+
+            <div>
+
+              <div class="daily-dish-library-name">
+                ${escapeHtml_(menu.name)}
+              </div>
+
+              ${
+                menu.description
+                  ? `
+                    <div class="daily-dish-library-description">
+                      ${escapeHtml_(menu.description)}
+                    </div>
+                  `
+                  : ''
+              }
+
+            </div>
+
+          </label>
+        `;
+
+      })
+      .join('');
+
+
+  updateDailyDishLibraryCount();
+
+}
+
+
+function escapeHtml_(value) {
+
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}
+
+
+function selectAllDailyDishLibrary(
+  checked
+) {
+
+  document
+    .querySelectorAll(
+      '.daily-dish-library-check'
+    )
+    .forEach(function(input) {
+
+      input.checked =
+        checked;
+
+    });
+
+
+  updateDailyDishLibraryCount();
+
+}
+
+
+function updateDailyDishLibraryCount() {
+
+  const count =
+    document.querySelectorAll(
+      '.daily-dish-library-check:checked'
+    ).length;
+
+
+  const element =
+    document.getElementById(
+      'dailyDishLibraryCount'
+    );
+
+
+  if (element) {
+
+    element.textContent =
+      'เลือก ' +
+      count +
+      ' รายการ';
+
+  }
+
+}
+
+
+function closeDailyDishLibrary() {
+
+  const modal =
+    document.getElementById(
+      'dailyDishLibraryModal'
+    );
+
+  if (modal) {
+
+    modal.style.display =
+      'none';
+
+  }
+
+}
+
+
+async function addSelectedDailyDishes() {
+
+  const selected =
+    Array.from(
+      document.querySelectorAll(
+        '.daily-dish-library-check:checked'
+      )
+    )
+    .map(function(input) {
+
+      return input.value;
+
+    });
+
+
+  if (!selected.length) {
+
+    alert(
+      'กรุณาเลือกเมนูอย่างน้อย 1 รายการ'
+    );
+
+    return;
+
+  }
+
+
+  const date =
+    document.getElementById(
+      'dailyDishLibraryDate'
+    ).value;
+
+
+  if (!date) {
+
+    alert(
+      'กรุณาเลือกวันที่'
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !confirm(
+      'เพิ่มเมนูที่เลือก ' +
+      selected.length +
+      ' รายการสำหรับวันที่ ' +
+      date +
+      ' ?'
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const token =
+      getAdminTokenSafe_();
+
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'text/plain;charset=utf-8'
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                'addDailyDishesFromLibrary',
+
+              adminToken:
+                token,
+
+              date:
+                date,
+
+              libraryIds:
+                selected
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'HTTP ' +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'เพิ่มเมนูไม่สำเร็จ'
+      );
+
+    }
+
+
+    let message =
+      'เพิ่มเมนูสำเร็จ ' +
+      result.addedCount +
+      ' รายการ';
+
+
+    if (
+      result.skippedCount
+    ) {
+
+      message +=
+        '\nข้ามเมนูที่มีอยู่แล้ว ' +
+        result.skippedCount +
+        ' รายการ';
+
+    }
+
+
+    alert(message);
+
+
+    closeDailyDishLibrary();
+
+    await loadMenuSystemData_();
+    
+    const dailyDateEl =
+      document.getElementById('dailyDateInput');
+    
+    if (dailyDateEl) {
+      dailyDateEl.value = date;
+    }
+    
+    renderDailyDishList();
+
+
+    // โหลดรายการแกงวันนี้ใหม่
+    if (
+      typeof loadDailyDishes ===
+      'function'
+    ) {
+
+      await loadDailyDishes();
+
+    }
+
+    else if (
+      typeof loadMenuSystem ===
+      'function'
+    ) {
+
+      await loadMenuSystem();
+
+    }
+
+    else if (
+      typeof loadData ===
+      'function'
+    ) {
+
+      await loadData();
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      'addSelectedDailyDishes:',
+      error
+    );
+
+    alert(
+      'เพิ่มเมนูไม่สำเร็จ\n' +
+      String(
+        error.message ||
+        error
+      )
+    );
+
+  }
+
+}
+  
+</script>
+</body>
+
+</html>
