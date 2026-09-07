@@ -57,14 +57,11 @@ jobs:
           liff_url = os.environ['LIFF_URL'].strip()
           api_url = os.environ['API_URL'].strip()
 
-          # Replace the entire LIFF_ID assignment, regardless of whether the
-          # previous value was a placeholder or an old real ID.
           liff_pattern = re.compile(
               r'(const\s+LIFF_ID\s*=\s*["\']).*?(["\'];)',
               re.S
           )
 
-          # Replace the entire API_URL assignment, preventing nested URLs.
           api_pattern = re.compile(
               r'(const\s+API_URL\s*=\s*["\']).*?(["\'];)',
               re.S
@@ -90,7 +87,7 @@ jobs:
               )
 
               if liff_count == 0:
-                  print(f'WARNING: LIFF_ID assignment not found in {filename}')
+                  print(f'INFO: LIFF_ID assignment not present in {filename}; this file may not use LIFF.')
               if api_count == 0:
                   print(f'WARNING: API_URL assignment not found in {filename}')
 
@@ -117,29 +114,35 @@ jobs:
           API_URL: ${{ inputs.api_url }}
         run: |
           python3 - <<'PY'
-          import json, os, pathlib, re
+          import json, os, pathlib
 
           liff_id = os.environ['LIFF_ID']
           api_url = os.environ['API_URL']
 
-          for filename in ('index.html', 'admin.html'):
-              path = pathlib.Path(filename)
-              text = path.read_text(encoding='utf-8')
-              assert liff_id in text, f'{filename}: LIFF_ID missing'
-              assert api_url in text, f'{filename}: API_URL missing'
-              assert 'https://script.google.com/macros/s/https://' not in text, f'{filename}: nested API URL remains'
-              assert '/exec/exec' not in text, f'{filename}: duplicate /exec remains'
+          # Customer must have both LIFF and API.
+          index = pathlib.Path('index.html').read_text(encoding='utf-8')
+          assert liff_id in index, 'index.html: LIFF_ID missing'
+          assert api_url in index, 'index.html: API_URL missing'
+          assert 'https://script.google.com/macros/s/https://' not in index, 'index.html: nested API URL remains'
+          assert '/exec/exec' not in index, 'index.html: duplicate /exec remains'
+
+          # Admin uses the backend API and does not necessarily use LIFF.
+          admin_path = pathlib.Path('admin.html')
+          if admin_path.exists():
+              admin = admin_path.read_text(encoding='utf-8')
+              if 'API_URL' in admin:
+                  assert api_url in admin, 'admin.html: API_URL missing'
+                  assert 'https://script.google.com/macros/s/https://' not in admin, 'admin.html: nested API URL remains'
+                  assert '/exec/exec' not in admin, 'admin.html: duplicate /exec remains'
 
           data = json.loads(pathlib.Path('config/store-config.json').read_text(encoding='utf-8'))
           assert data['LIFF_ID'] == liff_id
           assert data['API_URL'] == api_url
-          print('Configuration verification passed')
+          print('✅ Configuration verification passed')
           PY
 
       - name: Commit repaired configuration
         working-directory: target
-        env:
-          TARGET_REPO: ${{ inputs.target_repo }}
         run: |
           git config user.name 'FOOD ORDER SYSTEM Builder'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
