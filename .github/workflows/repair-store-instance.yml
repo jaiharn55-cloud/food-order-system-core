@@ -50,47 +50,100 @@ jobs:
           API_URL: ${{ inputs.api_url }}
         run: |
           python3 - <<'PY'
-          import json, os, pathlib
+          import json, os, pathlib, re
 
           target = pathlib.Path('target')
-          replacements = {
-              '__LIFF_ID__': os.environ['LIFF_ID'],
-              '__API_URL__': os.environ['API_URL'],
-          }
+          liff_id = os.environ['LIFF_ID'].strip()
+          liff_url = os.environ['LIFF_URL'].strip()
+          api_url = os.environ['API_URL'].strip()
+
+          # Replace the entire LIFF_ID assignment, regardless of whether the
+          # previous value was a placeholder or an old real ID.
+          liff_pattern = re.compile(
+              r'(const\s+LIFF_ID\s*=\s*["\']).*?(["\'];)',
+              re.S
+          )
+
+          # Replace the entire API_URL assignment, preventing nested URLs.
+          api_pattern = re.compile(
+              r'(const\s+API_URL\s*=\s*["\']).*?(["\'];)',
+              re.S
+          )
 
           for filename in ('index.html', 'admin.html'):
               path = target / filename
               if not path.exists():
                   continue
+
               text = path.read_text(encoding='utf-8')
-              for old, new in replacements.items():
-                  text = text.replace(old, new)
+
+              text, liff_count = liff_pattern.subn(
+                  lambda m: m.group(1) + liff_id + m.group(2),
+                  text,
+                  count=1
+              )
+
+              text, api_count = api_pattern.subn(
+                  lambda m: m.group(1) + api_url + m.group(2),
+                  text,
+                  count=1
+              )
+
+              if liff_count == 0:
+                  print(f'WARNING: LIFF_ID assignment not found in {filename}')
+              if api_count == 0:
+                  print(f'WARNING: API_URL assignment not found in {filename}')
+
               path.write_text(text, encoding='utf-8')
 
           config_path = target / 'config' / 'store-config.json'
           if config_path.exists():
               data = json.loads(config_path.read_text(encoding='utf-8'))
-              data['LIFF_ID'] = os.environ['LIFF_ID']
-              data['LIFF_URL'] = os.environ['LIFF_URL']
-              data['API_URL'] = os.environ['API_URL']
+              data['LIFF_ID'] = liff_id
+              data['LIFF_URL'] = liff_url
+              data['API_URL'] = api_url
               config_path.write_text(
                   json.dumps(data, ensure_ascii=False, indent=2) + '\n',
                   encoding='utf-8'
               )
 
-          print('LIFF/API configuration repaired')
+          print('Store configuration repaired successfully')
+          PY
+
+      - name: Verify repaired configuration
+        working-directory: target
+        env:
+          LIFF_ID: ${{ inputs.liff_id }}
+          API_URL: ${{ inputs.api_url }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, re
+
+          liff_id = os.environ['LIFF_ID']
+          api_url = os.environ['API_URL']
+
+          for filename in ('index.html', 'admin.html'):
+              path = pathlib.Path(filename)
+              text = path.read_text(encoding='utf-8')
+              assert liff_id in text, f'{filename}: LIFF_ID missing'
+              assert api_url in text, f'{filename}: API_URL missing'
+              assert 'https://script.google.com/macros/s/https://' not in text, f'{filename}: nested API URL remains'
+              assert '/exec/exec' not in text, f'{filename}: duplicate /exec remains'
+
+          data = json.loads(pathlib.Path('config/store-config.json').read_text(encoding='utf-8'))
+          assert data['LIFF_ID'] == liff_id
+          assert data['API_URL'] == api_url
+          print('Configuration verification passed')
           PY
 
       - name: Commit repaired configuration
         working-directory: target
         env:
           TARGET_REPO: ${{ inputs.target_repo }}
-          LIFF_ID: ${{ inputs.liff_id }}
-          API_URL: ${{ inputs.api_url }}
         run: |
           git config user.name 'FOOD ORDER SYSTEM Builder'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html admin.html config/store-config.json
           git diff --cached --quiet && echo 'No configuration changes needed' && exit 0
-          git commit -m "Repair LIFF and API configuration"
+          git commit -m 'Repair LIFF and API configuration'
           git push origin main
