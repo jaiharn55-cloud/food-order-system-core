@@ -1,0 +1,57 @@
+name: Sync Production Reference
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-production-reference:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_REPO: jaiharn55-cloud/food-order-liff
+      SOURCE_REF: 7ceb6c1a83fe7d6db7f27352d864e41d86840a92
+
+    steps:
+      - name: Checkout core
+        uses: actions/checkout@v4
+
+      - name: Download production reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p golden-master/reference-production/customer
+          mkdir -p golden-master/reference-production/admin
+          curl -fL "https://raw.githubusercontent.com/${SOURCE_REPO}/${SOURCE_REF}/index.html" \
+            -o golden-master/reference-production/customer/index.html
+          curl -fL "https://raw.githubusercontent.com/${SOURCE_REPO}/${SOURCE_REF}/admin.html" \
+            -o golden-master/reference-production/admin/admin.html
+          curl -fL "https://raw.githubusercontent.com/${SOURCE_REPO}/${SOURCE_REF}/README.md" \
+            -o golden-master/reference-production/README.md
+
+      - name: Record source metadata
+        shell: bash
+        run: |
+          cat > golden-master/reference-production/SOURCE.json <<EOF
+          {
+            "repository": "${SOURCE_REPO}",
+            "commit": "${SOURCE_REF}",
+            "customer": "index.html",
+            "admin": "admin.html",
+            "synced_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+      - name: Commit reference copy
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add golden-master/reference-production
+          if git diff --cached --quiet; then
+            echo "No reference changes"
+            exit 0
+          fi
+          git commit -m "Sync production reference ${SOURCE_REF:0:7}"
+          git push
