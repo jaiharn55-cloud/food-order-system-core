@@ -1,0 +1,96 @@
+name: Repair Store Instance Config
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: 'Target store repository, e.g. jaiharn55-cloud/food-order-khaokaeng'
+        required: true
+        default: 'jaiharn55-cloud/food-order-khaokaeng'
+      liff_id:
+        description: 'LIFF ID'
+        required: true
+      liff_url:
+        description: 'LIFF URL'
+        required: true
+      api_url:
+        description: 'Apps Script Web App /exec URL'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate token
+        env:
+          TOKEN: ${{ secrets.STORE_GITHUB_TOKEN }}
+        run: |
+          test -n "$TOKEN" || {
+            echo 'Missing repository secret STORE_GITHUB_TOKEN'
+            exit 1
+          }
+
+      - name: Checkout Core
+        uses: actions/checkout@v4
+
+      - name: Clone target store repository
+        env:
+          TARGET_REPO: ${{ inputs.target_repo }}
+          TOKEN: ${{ secrets.STORE_GITHUB_TOKEN }}
+        run: |
+          git clone "https://x-access-token:${TOKEN}@github.com/${TARGET_REPO}.git" target
+
+      - name: Repair LIFF/API configuration
+        env:
+          LIFF_ID: ${{ inputs.liff_id }}
+          LIFF_URL: ${{ inputs.liff_url }}
+          API_URL: ${{ inputs.api_url }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+
+          target = pathlib.Path('target')
+          replacements = {
+              '__LIFF_ID__': os.environ['LIFF_ID'],
+              '__API_URL__': os.environ['API_URL'],
+          }
+
+          for filename in ('index.html', 'admin.html'):
+              path = target / filename
+              if not path.exists():
+                  continue
+              text = path.read_text(encoding='utf-8')
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          config_path = target / 'config' / 'store-config.json'
+          if config_path.exists():
+              data = json.loads(config_path.read_text(encoding='utf-8'))
+              data['LIFF_ID'] = os.environ['LIFF_ID']
+              data['LIFF_URL'] = os.environ['LIFF_URL']
+              data['API_URL'] = os.environ['API_URL']
+              config_path.write_text(
+                  json.dumps(data, ensure_ascii=False, indent=2) + '\n',
+                  encoding='utf-8'
+              )
+
+          print('LIFF/API configuration repaired')
+          PY
+
+      - name: Commit repaired configuration
+        working-directory: target
+        env:
+          TARGET_REPO: ${{ inputs.target_repo }}
+          LIFF_ID: ${{ inputs.liff_id }}
+          API_URL: ${{ inputs.api_url }}
+        run: |
+          git config user.name 'FOOD ORDER SYSTEM Builder'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html admin.html config/store-config.json
+          git diff --cached --quiet && echo 'No configuration changes needed' && exit 0
+          git commit -m "Repair LIFF and API configuration"
+          git push origin main
